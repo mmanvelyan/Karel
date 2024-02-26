@@ -10,6 +10,6 @@ public class UnexpectedTokenException extends RuntimeException {
     }
 
     public String getMessage(){
-        return "pos "+pos+" : Unexpected token";
+        return "pos "+pos+" : Unexpected token " + got.getType();
     }
 }

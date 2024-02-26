@@ -23,4 +23,15 @@ public class Token {
     }
 
 
+    public TokenType getType() {
+        return type;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getValue() {
+        return value;
+    }
 }

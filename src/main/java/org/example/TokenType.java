@@ -12,6 +12,7 @@ public enum TokenType {
     WHILE,
     IF,
     ELSE,
+    SEMICOLON,
     END,
     UNEXPECTED
 }

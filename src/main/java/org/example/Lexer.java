@@ -4,9 +4,12 @@ public class Lexer {
     private final String str;
     private int pos;
 
+    private int prevPos;
+
     public Lexer(String str, int pos){
         this.str = str;
         this.pos = pos;
+        this.prevPos = pos;
     }
 
     public Lexer(String str){
@@ -14,7 +17,8 @@ public class Lexer {
     }
 
     public Token nextToken(){
-        while (pos < str.length() && (str.charAt(pos) == ' ' || str.charAt(pos) == '\n')){
+        prevPos = pos;
+        while (pos < str.length() && (str.charAt(pos) == ' ' || str.charAt(pos) == '\n' || str.charAt(pos) == '\t')){
             pos++;
         }
         if (pos >= str.length()){
@@ -36,13 +40,17 @@ public class Lexer {
             pos++;
             return new Token(TokenType.CURLY_BR_CLOSE);
         }
+        if (str.charAt(pos) == ';'){
+            pos++;
+            return new Token(TokenType.SEMICOLON);
+        }
         if ((str.charAt(pos) >= 'a' && str.charAt(pos) <= 'z') || (str.charAt(pos) >= 'A' && str.charAt(pos) <= 'Z')){
             int len = 0;
             while (pos < str.length() && ((str.charAt(pos) >= 'a' && str.charAt(pos) <= 'z') || (str.charAt(pos) >= 'A' && str.charAt(pos) <= 'Z') || (str.charAt(pos) >= '0' && str.charAt(pos) <= '9'))){
                 pos++;
                 len++;
             }
-            String name = str.substring(pos, pos+len);
+            String name = str.substring(pos-len, pos);
             switch (name){
                 case "if":
                     return new Token(TokenType.IF);
@@ -64,10 +72,21 @@ public class Lexer {
                 pos++;
                 len++;
             }
-            String value = str.substring(pos, pos+len);
+            String value = str.substring(pos-len, pos);
             return new Token(Integer.parseInt(value));
         }
         throw new UnexpectedTokenException(pos, new Token(TokenType.UNEXPECTED));
     }
 
+    public void prevToken(){
+        pos = prevPos;
+    }
+
+    public String getStr() {
+        return str;
+    }
+
+    public int getPos() {
+        return pos;
+    }
 }
