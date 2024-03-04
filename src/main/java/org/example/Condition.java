@@ -7,4 +7,7 @@ public class Condition {
         this.cond = cond;
     }
 
+    public ConditionType getCond() {
+        return cond;
+    }
 }

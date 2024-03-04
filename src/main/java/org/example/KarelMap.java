@@ -91,6 +91,95 @@ public class KarelMap {
         }
     }
 
+    private boolean northBlocked(){
+        return (y == rows || walls.contains(new Coordinates(x, y, Direction.NORTH)) || walls.contains(new Coordinates(x, y+1, Direction.SOUTH)));
+    }
+
+    private boolean southBlocked(){
+        return (y == 1 || walls.contains(new Coordinates(x, y, Direction.SOUTH)) || walls.contains(new Coordinates(x, y-1, Direction.NORTH)));
+    }
+
+    private boolean eastBlocked(){
+        return (x == cols || walls.contains(new Coordinates(x, y, Direction.EAST)) || walls.contains(new Coordinates(x+1, y, Direction.WEST)));
+    }
+
+    private boolean westBlocked(){
+        return (x == 1 || walls.contains(new Coordinates(x, y, Direction.WEST)) || walls.contains(new Coordinates(x-1, y, Direction.EAST)));
+    }
+
+    public boolean checkCondition(Condition condition){
+        switch (condition.getCond()){
+            case FRONT_IS_CLEAR -> {
+                return !checkCondition(new Condition(ConditionType.FRONT_IS_BLOCKED));
+            }
+            case FRONT_IS_BLOCKED -> {
+                return ((direction == Direction.NORTH && northBlocked()) ||
+                        (direction == Direction.EAST && eastBlocked()) ||
+                        (direction == Direction.SOUTH && southBlocked()) ||
+                        (direction == Direction.WEST && westBlocked()));
+            }
+            case LEFT_IS_CLEAR -> {
+                return !checkCondition(new Condition(ConditionType.LEFT_IS_BLOCKED));
+            }
+            case LEFT_IS_BLOCKED -> {
+                return ((direction == Direction.EAST && northBlocked()) ||
+                        (direction == Direction.SOUTH && eastBlocked()) ||
+                        (direction == Direction.WEST && southBlocked()) ||
+                        (direction == Direction.NORTH && westBlocked()));
+            }
+            case RIGHT_IS_CLEAR -> {
+                return !checkCondition(new Condition(ConditionType.RIGHT_IS_BLOCKED));
+            }
+            case RIGHT_IS_BLOCKED -> {
+                return ((direction == Direction.WEST && northBlocked()) ||
+                        (direction == Direction.NORTH && eastBlocked()) ||
+                        (direction == Direction.EAST && southBlocked()) ||
+                        (direction == Direction.SOUTH && westBlocked()));
+            }
+            case BEEPERS_PRESENT -> {
+                if (beepers.get(new Coordinates(x, y)) != null){
+                    return (beepers.get(new Coordinates(x, y)) > 0);
+                } else {
+                    return false;
+                }
+            }
+            case NO_BEEPERS_PRESENT -> {
+                return !checkCondition(new Condition(ConditionType.BEEPERS_PRESENT));
+            }
+            case BEEPERS_IN_BAG -> {
+                return (bag > 0);
+            }
+            case NO_BEEPERS_IN_BAG -> {
+                return (bag == 0);
+            }
+            case FACING_NORTH -> {
+                return (direction == Direction.NORTH);
+            }
+            case NOT_FACING_NORTH -> {
+                return (direction != Direction.NORTH);
+            }
+            case FACING_EAST -> {
+                return (direction == Direction.EAST);
+            }
+            case NOT_FACING_EAST -> {
+                return (direction != Direction.EAST);
+            }
+            case FACING_SOUTH -> {
+                return (direction == Direction.SOUTH);
+            }
+            case NOT_FACING_SOUTH -> {
+                return (direction != Direction.SOUTH);
+            }
+            case FACING_WEST -> {
+                return (direction == Direction.WEST);
+            }
+            case NOT_FACING_WEST -> {
+                return (direction != Direction.WEST);
+            }
+        }
+        return false;
+    }
+
     public void print(){
         System.out.println(" CORNER  FACING  BEEP-BAG  BEEP-CORNER");
         System.out.print(" ("+x+", "+y+")");
