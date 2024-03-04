@@ -92,10 +92,23 @@ public class KarelMap {
     }
 
     public void print(){
-        for (Coordinates w : walls){
-            System.out.println(w.getX() + " " + w.getY() + " " + w.getDirection());
+        System.out.println(" CORNER  FACING  BEEP-BAG  BEEP-CORNER");
+        System.out.print(" ("+x+", "+y+")");
+        if (direction == Direction.EAST || direction == Direction.WEST){
+            System.out.print(" ");
         }
-        for (int i = 0; i < 2*rows+1; i++){
+        System.out.print("   "+direction+"      "+bag+"         ");
+        if (beepers.get(new Coordinates(x, y)) != null){
+            System.out.println(beepers.get(new Coordinates(x, y)));
+        } else {
+            System.out.println(0);
+        }
+        for (int i = 2*rows; i >= 0; i--){
+            if (i%2 == 1){
+                System.out.print(" "+(i/2+1)+" ");
+            } else {
+                System.out.print("   ");
+            }
             for (int j = 0; j < 2*cols+1; j++) {
                 if (i%2 == 0 && j%2 == 0){
                     if ((i == 0 && j == 0) || (i == 2*rows && j == 0) || (i == 0 && j == 2*cols) || (i == 2*rows && j == 2*cols)) {
@@ -107,20 +120,20 @@ public class KarelMap {
                             System.out.print("|");
                         } else {
                             int ver = 0, hor = 0;
-                            if ((i > 0 && j > 0 && walls.contains(new Coordinates(j / 2 - 1, i / 2 - 1, Direction.EAST))) ||
-                                    (i > 0 && j < 2 * cols && walls.contains(new Coordinates(j / 2, i / 2 - 1, Direction.WEST)))) {
+                            if ((i > 0 && j > 0 && walls.contains(new Coordinates(j / 2, i / 2, Direction.EAST))) ||
+                                    (i > 0 && j < 2 * cols && walls.contains(new Coordinates(j / 2+1, i / 2, Direction.WEST)))) {
                                 ver++;
                             }
-                            if ((i > 0 && j > 0 && walls.contains(new Coordinates(j / 2 - 1, i / 2 - 1, Direction.SOUTH))) ||
-                                    (i < 2 * rows && j > 0 && walls.contains(new Coordinates(j / 2 - 1, i / 2, Direction.NORTH)))) {
+                            if ((i > 0 && j > 0 && walls.contains(new Coordinates(j / 2, i / 2, Direction.NORTH))) ||
+                                    (i < 2 * rows && j > 0 && walls.contains(new Coordinates(j / 2, i / 2+1, Direction.SOUTH)))) {
                                 hor++;
                             }
-                            if ((i > 0 && j < 2 * cols && walls.contains(new Coordinates(j / 2, i / 2 - 1, Direction.SOUTH))) ||
-                                    (i < 2 * rows && j < 2 * cols && walls.contains(new Coordinates(j / 2, i / 2, Direction.NORTH)))) {
+                            if ((i > 0 && j < 2 * cols && walls.contains(new Coordinates(j / 2+1, i / 2, Direction.NORTH))) ||
+                                    (i < 2 * rows && j < 2 * cols && walls.contains(new Coordinates(j / 2+1, i / 2+1, Direction.SOUTH)))) {
                                 hor++;
                             }
-                            if ((i < 2 * rows && j > 0 && walls.contains(new Coordinates(j / 2 - 1, i / 2, Direction.EAST))) ||
-                                    (i < 2 * rows && j < 2 * cols && walls.contains(new Coordinates(j / 2, i / 2, Direction.WEST)))) {
+                            if ((i < 2 * rows && j > 0 && walls.contains(new Coordinates(j / 2, i / 2+1, Direction.EAST))) ||
+                                    (i < 2 * rows && j < 2 * cols && walls.contains(new Coordinates(j / 2+1, i / 2+1, Direction.WEST)))) {
                                 ver++;
                             }
                             if ((hor > 0 && ver > 0) || hor == 1 || ver == 1) {
@@ -136,8 +149,8 @@ public class KarelMap {
                     }
                 } else if (i%2 == 0 && j%2 != 0) {
                     if ((i == 0 || i == 2 * rows ||
-                                    walls.contains(new Coordinates(j / 2, i / 2 - 1, Direction.SOUTH)) ||
-                                    walls.contains(new Coordinates(j / 2, i / 2, Direction.NORTH)))
+                                    walls.contains(new Coordinates(j / 2+1, i / 2, Direction.NORTH)) ||
+                                    walls.contains(new Coordinates(j / 2+1, i / 2+1, Direction.SOUTH)))
                     ) {
                         System.out.print("---");
                     } else {
@@ -145,14 +158,14 @@ public class KarelMap {
                     }
                 } else if (i%2 != 0 && j%2 == 0){
                     if ((j == 0 || j == 2*cols ||
-                                    walls.contains(new Coordinates(j/2-1, i/2, Direction.EAST)) ||
-                                    walls.contains(new Coordinates(j/2, i/2, Direction.WEST)))
+                                    walls.contains(new Coordinates(j/2, i/2+1, Direction.EAST)) ||
+                                    walls.contains(new Coordinates(j/2+1, i/2+1, Direction.WEST)))
                     ){
                         System.out.print("|");
                     } else {
                         System.out.print(" ");
                     }
-                } else if (i%2 != 0 && j%2 != 0 && j/2 == x && i/2 == y){
+                } else if (i%2 != 0 && j%2 != 0 && j/2 == x-1 && i/2 == y-1){
                     switch (direction){
                         case NORTH:
                             System.out.print(" ^ ");
@@ -169,8 +182,8 @@ public class KarelMap {
                     }
                 } else if (i%2 != 0 && j%2 != 0){
                     int x = 0;
-                    if (beepers.get(new Coordinates(j/2, i/2)) != null) {
-                        x = beepers.get(new Coordinates(j / 2, i / 2));
+                    if (beepers.get(new Coordinates(j/2+1, i/2+1)) != null) {
+                        x = beepers.get(new Coordinates(j / 2+1, i / 2+1));
                     }
                     if (x > 0){
                         System.out.print(" ");
@@ -183,6 +196,11 @@ public class KarelMap {
             }
             System.out.println();
         }
+        System.out.print("   ");
+        for (int i = 1; i <= cols; i++){
+            System.out.print("  "+i+" ");
+        }
+        System.out.println();
     }
 
 }
