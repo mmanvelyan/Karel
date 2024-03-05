@@ -51,6 +51,7 @@ public class KarelMap {
                 x--;
                 break;
         }
+        this.print();
     }
 
     public void turnLeft(){
@@ -68,6 +69,7 @@ public class KarelMap {
                 direction = Direction.SOUTH;
                 break;
         }
+        this.print();
     }
 
     public void putBeeper(){
@@ -80,6 +82,7 @@ public class KarelMap {
         } else {
             beepers.put(new Coordinates(x, y), beepers.get(new Coordinates(x, y))+1);
         }
+        this.print();
     }
 
     public void pickBeeper(){
@@ -89,6 +92,7 @@ public class KarelMap {
             beepers.put(new Coordinates(x, y), beepers.get(new Coordinates(x, y))-1);
             bag++;
         }
+        this.print();
     }
 
     private boolean northBlocked(){
@@ -181,6 +185,13 @@ public class KarelMap {
     }
 
     public void print(){
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
         System.out.println(" CORNER  FACING  BEEP-BAG  BEEP-CORNER");
         System.out.print(" ("+x+", "+y+")");
         if (direction == Direction.EAST || direction == Direction.WEST){

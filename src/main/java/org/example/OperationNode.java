@@ -9,4 +9,16 @@ public class OperationNode implements Node{
         this.operation = operation;
         this.next = next;
     }
+
+    public void accept(NodeVisitor visitor, KarelMap map, Functions functions){
+        visitor.accept(this, map, functions);
+    }
+
+    public Operation getOperation() {
+        return operation;
+    }
+
+    public Node getNext() {
+        return next;
+    }
 }

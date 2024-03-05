@@ -10,4 +10,20 @@ public class WhileNode implements Node {
         this.node = body;
         this.next = next;
     }
+
+    public void accept(NodeVisitor visitor, KarelMap map, Functions functions){
+        visitor.accept(this, map, functions);
+    }
+
+    public Condition getCond() {
+        return cond;
+    }
+
+    public Node getNode() {
+        return node;
+    }
+
+    public Node getNext() {
+        return next;
+    }
 }

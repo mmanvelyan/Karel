@@ -8,33 +8,26 @@ public class Main {
                 "\tturnLeft();\n" +
                 "\tturnLeft();\n" +
                 "\tturnLeft();\n" +
-                "}\n" +
+                "}\t\n" +
                 "\n" +
                 "function main(){\n" +
-                "\tmove();\n" +
-                "\tputBeeper();\n" +
-                "\tif (leftIsClear()){\n" +
+                "\twhile (frontIsClear()){\n" +
                 "\t\tmove();\n" +
                 "\t}\n" +
-                "\trepeat (3) {\n" +
-                "\t\tputBeeper();\n" +
-                "\t\twhile (beepersPresent()){\n" +
+                "\twhile (frontIsBlocked()){\n" +
+                "\t\tturnLeft();\n" +
+                "\t\tmove();\n" +
+                "\t\tturnRight();\n" +
+                "\t\tmove();\n" +
+                "\t\tif (beepersPresent()){\n" +
                 "\t\t\tpickBeeper();\n" +
                 "\t\t}\n" +
                 "\t}\n" +
-                "\tif (rightIsBlocked()){\n" +
-                "\t\tmove();\n" +
-                "\t} else {\n" +
-                "\t\tturnLeft();\n" +
-                "\t}\n" +
-                "\tturnLeft();\n" +
-                "\tturnRight();\n" +
                 "}\n";
         Parser parser = new Parser();
         Functions functions = new Functions();
         Lexer lex = new Lexer(program, 0);
         parser.parse(lex, functions);
-        System.out.println(program);
         Map<Coordinates, Integer> beepers = new HashMap<>();
         beepers.put(new Coordinates(3, 2), 1);
         beepers.put(new Coordinates(5, 4), 1);
@@ -56,6 +49,10 @@ public class Main {
         walls.add(new Coordinates(7, 1, Direction.EAST));
         System.out.println(walls.contains(new Coordinates(7, 3, Direction.EAST)));
         KarelMap km = new KarelMap(9, 9, 1, 1, 0, Direction.EAST, beepers, walls);
+        km.print();
+        System.out.println(program);
+        Node start = new FunctionCallNode("main", new EmptyNode());
+        start.accept(new RunNodeVisitor(), km, functions);
         km.print();
     }
 }

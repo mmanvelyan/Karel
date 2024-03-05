@@ -12,4 +12,24 @@ public class IfNode implements Node{
         this.nodeElse = bodyElse;
         this.next = next;
     }
+
+    public void accept(NodeVisitor visitor, KarelMap map, Functions functions){
+        visitor.accept(this, map, functions);
+    }
+
+    public Condition getCond() {
+        return cond;
+    }
+
+    public Node getNodeIf() {
+        return nodeIf;
+    }
+
+    public Node getNodeElse() {
+        return nodeElse;
+    }
+
+    public Node getNext() {
+        return next;
+    }
 }
