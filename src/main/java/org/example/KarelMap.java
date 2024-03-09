@@ -186,7 +186,7 @@ public class KarelMap {
 
     public void print(){
         try {
-            Thread.sleep(100);
+            Thread.sleep(500);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }

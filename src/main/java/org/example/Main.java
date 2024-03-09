@@ -26,7 +26,7 @@ public class Main {
                 "}\n";
         Parser parser = new Parser();
         Functions functions = new Functions();
-        Lexer lex = new Lexer(program, 0);
+        Lexer lex = new Lexer(program);
         parser.parse(lex, functions);
         Map<Coordinates, Integer> beepers = new HashMap<>();
         beepers.put(new Coordinates(3, 2), 1);

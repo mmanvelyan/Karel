@@ -57,16 +57,16 @@ public class Parser {
     public Condition parseCondition(Lexer lex){
         Token next = lex.nextToken();
         if (next.getType() != TokenType.NAME){
-            throw new UnexpectedTokenException(lex.getPos(), next);
+            throw new UnexpectedTokenException(next, "Condition name");
         }
         String name = next.getName();
         next = lex.nextToken();
         if (next.getType() != TokenType.ROUND_BR_OPEN){
-            throw new UnexpectedTokenException(lex.getPos(), next);
+            throw new UnexpectedTokenException(next, "(");
         }
         next = lex.nextToken();
         if (next.getType() != TokenType.ROUND_BR_CLOSE){
-            throw new UnexpectedTokenException(lex.getPos(), next);
+            throw new UnexpectedTokenException(next, ")");
         }
         switch (name){
             case "frontIsClear":
@@ -106,14 +106,14 @@ public class Parser {
             case "notFacingWest":
                 return new Condition(ConditionType.NOT_FACING_WEST);
             default:
-                throw new UnexpectedTokenException(lex.getPos(), next);
+                throw new UnexpectedTokenException(next, "Condition name");
         }
     }
 
     public Operation parseOperationStatement(Lexer lex){
         Token next = lex.nextToken();
         if (next.getType() != TokenType.NAME){
-            throw new UnexpectedTokenException(lex.getPos(), next);
+            throw new UnexpectedTokenException(next, "Operation name");
         }
         Operation operation;
         switch (next.getName()){
@@ -130,19 +130,19 @@ public class Parser {
                 operation = Operation.PICK_BEEPER;
                 break;
             default:
-                throw new UnexpectedTokenException(lex.getPos(), next);
+                throw new UnexpectedTokenException(next, "Operation name");
         }
         next = lex.nextToken();
         if (next.getType() != TokenType.ROUND_BR_OPEN){
-            throw new UnexpectedTokenException(lex.getPos(), next);
+            throw new UnexpectedTokenException(next, "(");
         }
         next = lex.nextToken();
         if (next.getType() != TokenType.ROUND_BR_CLOSE) {
-            throw new UnexpectedTokenException(lex.getPos(), next);
+            throw new UnexpectedTokenException(next, ")");
         }
         next = lex.nextToken();
         if (next.getType() != TokenType.SEMICOLON) {
-            throw new UnexpectedTokenException(lex.getPos(), next);
+            throw new UnexpectedTokenException(next, ";");
         }
         return operation;
     }
@@ -152,62 +152,62 @@ public class Parser {
         if (next.getType() == TokenType.REPEAT){
             next = lex.nextToken();
             if (next.getType() != TokenType.ROUND_BR_OPEN){
-                throw new UnexpectedTokenException(lex.getPos(), next);
+                throw new UnexpectedTokenException(next, "(");
             }
             next = lex.nextToken();
             int count = next.getValue();
             next = lex.nextToken();
             if (next.getType() != TokenType.ROUND_BR_CLOSE){
-                throw new UnexpectedTokenException(lex.getPos(), next);
+                throw new UnexpectedTokenException(next, ")");
             }
             next = lex.nextToken();
             if (next.getType() != TokenType.CURLY_BR_OPEN){
-                throw new UnexpectedTokenException(lex.getPos(), next);
+                throw new UnexpectedTokenException(next, "{");
             }
             Node body = parseBody(lex);
             next = lex.nextToken();
             if (next.getType() != TokenType.CURLY_BR_CLOSE){
-                throw new UnexpectedTokenException(lex.getPos(), next);
+                throw new UnexpectedTokenException(next, "}");
             }
             return new RepeatNode(count, body, parseBody(lex));
         } else if (next.getType() == TokenType.WHILE){
             next = lex.nextToken();
             if (next.getType() != TokenType.ROUND_BR_OPEN){
-                throw new UnexpectedTokenException(lex.getPos(), next);
+                throw new UnexpectedTokenException(next, "(");
             }
             Condition cond = parseCondition(lex);
             next = lex.nextToken();
             if (next.getType() != TokenType.ROUND_BR_CLOSE){
-                throw new UnexpectedTokenException(lex.getPos(), next);
+                throw new UnexpectedTokenException(next, ")");
             }
             next = lex.nextToken();
             if (next.getType() != TokenType.CURLY_BR_OPEN){
-                throw new UnexpectedTokenException(lex.getPos(), next);
+                throw new UnexpectedTokenException(next, "{");
             }
             Node body = parseBody(lex);
             next = lex.nextToken();
             if (next.getType() != TokenType.CURLY_BR_CLOSE){
-                throw new UnexpectedTokenException(lex.getPos(), next);
+                throw new UnexpectedTokenException(next, "}");
             }
             return new WhileNode(cond, body, parseBody(lex));
         } else if (next.getType() == TokenType.IF){
             next = lex.nextToken();
             if (next.getType() != TokenType.ROUND_BR_OPEN){
-                throw new UnexpectedTokenException(lex.getPos(), next);
+                throw new UnexpectedTokenException(next, "(");
             }
             Condition cond = parseCondition(lex);
             next = lex.nextToken();
             if (next.getType() != TokenType.ROUND_BR_CLOSE){
-                throw new UnexpectedTokenException(lex.getPos(), next);
+                throw new UnexpectedTokenException(next, ")");
             }
             next = lex.nextToken();
             if (next.getType() != TokenType.CURLY_BR_OPEN){
-                throw new UnexpectedTokenException(lex.getPos(), next);
+                throw new UnexpectedTokenException(next, "{");
             }
             Node body = parseBody(lex);
             next = lex.nextToken();
             if (next.getType() != TokenType.CURLY_BR_CLOSE){
-                throw new UnexpectedTokenException(lex.getPos(), next);
+                throw new UnexpectedTokenException(next, "}");
             }
             next = lex.nextToken();
             if (next.getType() != TokenType.ELSE) {
@@ -216,12 +216,12 @@ public class Parser {
             } else {
                 next = lex.nextToken();
                 if (next.getType() != TokenType.CURLY_BR_OPEN){
-                    throw new UnexpectedTokenException(lex.getPos(), next);
+                    throw new UnexpectedTokenException(next, "{");
                 }
                 Node bodyElse = parseBody(lex);
                 next = lex.nextToken();
                 if (next.getType() != TokenType.CURLY_BR_CLOSE){
-                    throw new UnexpectedTokenException(lex.getPos(), next);
+                    throw new UnexpectedTokenException(next, "}");
                 }
                 return new IfNode(cond, body, bodyElse, parseBody(lex));
             }
@@ -233,15 +233,15 @@ public class Parser {
             String name = next.getName();
             next = lex.nextToken();
             if (next.getType() != TokenType.ROUND_BR_OPEN){
-                throw new UnexpectedTokenException(lex.getPos(), next);
+                throw new UnexpectedTokenException(next, "(");
             }
             next = lex.nextToken();
             if (next.getType() != TokenType.ROUND_BR_CLOSE) {
-                throw new UnexpectedTokenException(lex.getPos(), next);
+                throw new UnexpectedTokenException(next, ")");
             }
             next = lex.nextToken();
             if (next.getType() != TokenType.SEMICOLON) {
-                throw new UnexpectedTokenException(lex.getPos(), next);
+                throw new UnexpectedTokenException(next, ";");
             }
             switch (name){
                 case "move":
@@ -263,31 +263,31 @@ public class Parser {
         while (next.getType() == TokenType.FUNCTION){
             next = lex.nextToken();
             if (next.getType() != TokenType.NAME){
-                throw new UnexpectedTokenException(lex.getPos(), next);
+                throw new UnexpectedTokenException(next, "Name");
             }
             String name = next.getName();
             next = lex.nextToken();
             if (next.getType() != TokenType.ROUND_BR_OPEN){
-                throw new UnexpectedTokenException(lex.getPos(), next);
+                throw new UnexpectedTokenException(next, "(");
             }
             next = lex.nextToken();
             if (next.getType() != TokenType.ROUND_BR_CLOSE) {
-                throw new UnexpectedTokenException(lex.getPos(), next);
+                throw new UnexpectedTokenException(next, ")");
             }
             next = lex.nextToken();
             if (next.getType() != TokenType.CURLY_BR_OPEN) {
-                throw new UnexpectedTokenException(lex.getPos(), next);
+                throw new UnexpectedTokenException(next, "{");
             }
             Node body = parseBody(lex);
             next = lex.nextToken();
             if (next.getType() != TokenType.CURLY_BR_CLOSE) {
-                throw new UnexpectedTokenException(lex.getPos(), next);
+                throw new UnexpectedTokenException(next, "}");
             }
             funcs.addFunction(name, body);
             next = lex.nextToken();
         }
         if (next.getType() != TokenType.END){
-            throw new UnexpectedTokenException(lex.getPos(), next);
+            throw new UnexpectedTokenException(next, "function or end");
         }
     }
 }
