@@ -303,6 +303,37 @@ public class KarelMap {
         System.out.println();
     }
 
+    public int getRows() {
+        return rows;
+    }
+
+    public int getCols() {
+        return cols;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public int getBag() {
+        return bag;
+    }
+
+    public Direction getDirection() {
+        return direction;
+    }
+
+    public Map<Coordinates, Integer> getBeepers() {
+        return beepers;
+    }
+
+    public Set<Coordinates> getWalls() {
+        return walls;
+    }
 }
 
 
