@@ -1,18 +1,29 @@
 package org.example;
 
 public enum TokenType {
-    NUMBER,
-    NAME,
-    ROUND_BR_OPEN,
-    ROUND_BR_CLOSE,
-    CURLY_BR_OPEN,
-    CURLY_BR_CLOSE,
-    FUNCTION,
-    REPEAT,
-    WHILE,
-    IF,
-    ELSE,
-    SEMICOLON,
-    END,
-    UNEXPECTED
+    NUMBER("number"),
+    NAME("name"),
+    ROUND_BR_OPEN("("),
+    ROUND_BR_CLOSE(")"),
+    CURLY_BR_OPEN("{"),
+    CURLY_BR_CLOSE("}"),
+    FUNCTION("function"),
+    REPEAT("repeat"),
+    WHILE("while"),
+    IF("if"),
+    ELSE("else"),
+    SEMICOLON(";"),
+    END("end of program"),
+    UNEXPECTED("invalid char");
+
+    private final String description;
+
+    TokenType (String description){
+        this.description = description;
+    }
+
+    @Override
+    public String toString(){
+        return description;
+    }
 }
