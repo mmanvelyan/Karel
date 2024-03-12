@@ -4,26 +4,28 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        String program = "function turnRight(){\n" +
-                "\tturnLeft();\n" +
-                "\tturnLeft();\n" +
-                "\tturnLeft();\n" +
-                "}\t\n" +
-                "\n" +
-                "function main(){\n" +
-                "\twhile (frontIsClear()){\n" +
-                "\t\tmove();\n" +
-                "\t}\n" +
-                "\twhile (frontIsBlocked()){\n" +
-                "\t\tturnLeft();\n" +
-                "\t\tmove();\n" +
-                "\t\tturnRight();\n" +
-                "\t\tmove();\n" +
-                "\t\tif (beepersPresent()){\n" +
-                "\t\t\tpickBeeper();\n" +
-                "\t\t}\n" +
-                "\t}\n" +
-                "}\n";
+        String program = """
+                function turnRight(){
+                \tturnLeft();
+                \tturnLeft();
+                \tturnLeft();
+                }\t
+
+                function main(){
+                \twhile (frontIsClear()){
+                \t\tmove();
+                \t}
+                \twhile (frontIsBlocked()){
+                \t\tturnLeft();
+                \t\tmove();
+                \t\tturnRight();
+                \t\tmove();
+                \t\tif (beepersPresent()){
+                \t\t\tpickBeeper();
+                \t\t}
+                \t}
+                }
+                """;
         Parser parser = new Parser();
         Functions functions = new Functions();
         Lexer lex = new Lexer(program);

@@ -26,48 +26,40 @@ public class KarelMap {
 
     public void move(){
         switch (direction) {
-            case NORTH:
+            case NORTH -> {
                 if (y == rows || walls.contains(new Coordinates(x, y, Direction.NORTH)) || walls.contains(new Coordinates(x, y + 1, Direction.SOUTH))) {
                     throw new RuntimeException();
                 }
                 y++;
-                break;
-            case EAST:
+            }
+            case EAST -> {
                 if (x == cols || walls.contains(new Coordinates(x, y, Direction.EAST)) || walls.contains(new Coordinates(x + 1, y, Direction.WEST))) {
                     throw new RuntimeException();
                 }
                 x++;
-                break;
-            case SOUTH:
+            }
+            case SOUTH -> {
                 if (y == 1 || walls.contains(new Coordinates(x, y - 1, Direction.NORTH)) || walls.contains(new Coordinates(x, y, Direction.SOUTH))) {
                     throw new RuntimeException();
                 }
                 y--;
-                break;
-            case WEST:
+            }
+            case WEST -> {
                 if (x == 1 || walls.contains(new Coordinates(x - 1, y, Direction.EAST)) || walls.contains(new Coordinates(x, y, Direction.WEST))) {
                     throw new RuntimeException();
                 }
                 x--;
-                break;
+            }
         }
         this.print();
     }
 
     public void turnLeft(){
-        switch (direction){
-            case NORTH:
-                direction = Direction.WEST;
-                break;
-            case EAST:
-                direction = Direction.NORTH;
-                break;
-            case SOUTH:
-                direction = Direction.EAST;
-                break;
-            case WEST:
-                direction = Direction.SOUTH;
-                break;
+        switch (direction) {
+            case NORTH -> direction = Direction.WEST;
+            case EAST -> direction = Direction.NORTH;
+            case SOUTH -> direction = Direction.EAST;
+            case WEST -> direction = Direction.SOUTH;
         }
         this.print();
     }
@@ -112,7 +104,7 @@ public class KarelMap {
     }
 
     public boolean checkCondition(Condition condition){
-        switch (condition.getCond()){
+        switch (condition.cond()){
             case FRONT_IS_CLEAR -> {
                 return !checkCondition(new Condition(ConditionType.FRONT_IS_BLOCKED));
             }
@@ -266,19 +258,11 @@ public class KarelMap {
                         System.out.print(" ");
                     }
                 } else if (i%2 != 0 && j%2 != 0 && j/2 == x-1 && i/2 == y-1){
-                    switch (direction){
-                        case NORTH:
-                            System.out.print(" ^ ");
-                            break;
-                        case EAST:
-                            System.out.print(" > ");
-                            break;
-                        case SOUTH:
-                            System.out.print(" v ");
-                            break;
-                        case WEST:
-                            System.out.print(" < ");
-                            break;
+                    switch (direction) {
+                        case NORTH -> System.out.print(" ^ ");
+                        case EAST -> System.out.print(" > ");
+                        case SOUTH -> System.out.print(" v ");
+                        case WEST -> System.out.print(" < ");
                     }
                 } else if (i%2 != 0 && j%2 != 0){
                     int x = 0;

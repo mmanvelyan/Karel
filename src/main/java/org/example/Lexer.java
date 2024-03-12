@@ -70,20 +70,14 @@ public class Lexer {
                 len++;
             }
             String name = str.substring(pos-len, pos);
-            switch (name){
-                case "if":
-                    return new Token(line, linePos-1, TokenType.IF);
-                case "else":
-                    return new Token(line, linePos-1, TokenType.ELSE);
-                case "repeat":
-                    return new Token(line, linePos-1, TokenType.REPEAT);
-                case "while":
-                    return new Token(line, linePos-1, TokenType.WHILE);
-                case "function":
-                    return new Token(line, linePos-1, TokenType.FUNCTION);
-                default:
-                    return new Token(line, linePos-1, name);
-            }
+            return switch (name) {
+                case "if" -> new Token(line, linePos - 1, TokenType.IF);
+                case "else" -> new Token(line, linePos - 1, TokenType.ELSE);
+                case "repeat" -> new Token(line, linePos - 1, TokenType.REPEAT);
+                case "while" -> new Token(line, linePos - 1, TokenType.WHILE);
+                case "function" -> new Token(line, linePos - 1, TokenType.FUNCTION);
+                default -> new Token(line, linePos - 1, name);
+            };
         }
         if (str.charAt(pos) >= '0' && str.charAt(pos) <= '9'){
             int len = 0;

@@ -50,9 +50,6 @@ package org.example;
                             notFacingWest()
  */
 
-import static org.example.TokenType.END;
-import static org.example.TokenType.ROUND_BR_OPEN;
-
 public class Parser {
     public Condition parseCondition(Lexer lex){
         Token next = lex.nextToken();
@@ -69,46 +66,27 @@ public class Parser {
         if (next.getType() != TokenType.ROUND_BR_CLOSE){
             throw new UnexpectedTokenException(next, ")");
         }
-        switch (name){
-            case "frontIsClear":
-                return new Condition(ConditionType.FRONT_IS_CLEAR);
-            case "frontIsBlocked":
-                return new Condition(ConditionType.FRONT_IS_BLOCKED);
-            case "leftIsClear":
-                return new Condition(ConditionType.LEFT_IS_CLEAR);
-            case "leftIsBlocked":
-                return new Condition(ConditionType.LEFT_IS_BLOCKED);
-            case "rightIsClear":
-                return new Condition(ConditionType.RIGHT_IS_CLEAR);
-            case "rightIsBlocked":
-                return new Condition(ConditionType.RIGHT_IS_BLOCKED);
-            case "beepersPresent":
-                return new Condition(ConditionType.BEEPERS_PRESENT);
-            case "noBeepersPresent":
-                return new Condition(ConditionType.NO_BEEPERS_PRESENT);
-            case "beepersInBag":
-                return new Condition(ConditionType.BEEPERS_IN_BAG);
-            case "noBeepersInBag":
-                return new Condition(ConditionType.NO_BEEPERS_IN_BAG);
-            case "facingNorth":
-                return new Condition(ConditionType.FACING_NORTH);
-            case "notFacingNorth":
-                return new Condition(ConditionType.NOT_FACING_NORTH);
-            case "facingEast":
-                return new Condition(ConditionType.FACING_EAST);
-            case "notFacingEast":
-                return new Condition(ConditionType.NOT_FACING_EAST);
-            case "facingSouth":
-                return new Condition(ConditionType.FACING_SOUTH);
-            case "notFacingSouth":
-                return new Condition(ConditionType.NOT_FACING_SOUTH);
-            case "facingWest":
-                return new Condition(ConditionType.FACING_WEST);
-            case "notFacingWest":
-                return new Condition(ConditionType.NOT_FACING_WEST);
-            default:
-                throw new UnexpectedTokenException(nameToken, "Condition name");
-        }
+        return switch (name) {
+            case "frontIsClear" -> new Condition(ConditionType.FRONT_IS_CLEAR);
+            case "frontIsBlocked" -> new Condition(ConditionType.FRONT_IS_BLOCKED);
+            case "leftIsClear" -> new Condition(ConditionType.LEFT_IS_CLEAR);
+            case "leftIsBlocked" -> new Condition(ConditionType.LEFT_IS_BLOCKED);
+            case "rightIsClear" -> new Condition(ConditionType.RIGHT_IS_CLEAR);
+            case "rightIsBlocked" -> new Condition(ConditionType.RIGHT_IS_BLOCKED);
+            case "beepersPresent" -> new Condition(ConditionType.BEEPERS_PRESENT);
+            case "noBeepersPresent" -> new Condition(ConditionType.NO_BEEPERS_PRESENT);
+            case "beepersInBag" -> new Condition(ConditionType.BEEPERS_IN_BAG);
+            case "noBeepersInBag" -> new Condition(ConditionType.NO_BEEPERS_IN_BAG);
+            case "facingNorth" -> new Condition(ConditionType.FACING_NORTH);
+            case "notFacingNorth" -> new Condition(ConditionType.NOT_FACING_NORTH);
+            case "facingEast" -> new Condition(ConditionType.FACING_EAST);
+            case "notFacingEast" -> new Condition(ConditionType.NOT_FACING_EAST);
+            case "facingSouth" -> new Condition(ConditionType.FACING_SOUTH);
+            case "notFacingSouth" -> new Condition(ConditionType.NOT_FACING_SOUTH);
+            case "facingWest" -> new Condition(ConditionType.FACING_WEST);
+            case "notFacingWest" -> new Condition(ConditionType.NOT_FACING_WEST);
+            default -> throw new UnexpectedTokenException(nameToken, "Condition name");
+        };
     }
 
     public Node parseBody(Lexer lex){
@@ -210,18 +188,13 @@ public class Parser {
             if (next.getType() != TokenType.SEMICOLON) {
                 throw new UnexpectedTokenException(next, ";");
             }
-            switch (name){
-                case "move":
-                    return new OperationNode(Operation.MOVE, parseBody(lex));
-                case "turnLeft":
-                    return new OperationNode(Operation.TURN_LEFT, parseBody(lex));
-                case "putBeeper":
-                    return new OperationNode(Operation.PUT_BEEPER, parseBody(lex));
-                case "pickBeeper":
-                    return new OperationNode(Operation.PICK_BEEPER, parseBody(lex));
-                default:
-                    return new FunctionCallNode(name, parseBody(lex));
-            }
+            return switch (name) {
+                case "move" -> new OperationNode(Operation.MOVE, parseBody(lex));
+                case "turnLeft" -> new OperationNode(Operation.TURN_LEFT, parseBody(lex));
+                case "putBeeper" -> new OperationNode(Operation.PUT_BEEPER, parseBody(lex));
+                case "pickBeeper" -> new OperationNode(Operation.PICK_BEEPER, parseBody(lex));
+                default -> new FunctionCallNode(name, parseBody(lex));
+            };
         }
     }
 

@@ -1,13 +1,5 @@
 package org.example;
 
-public class Condition {
-    private final ConditionType cond;
+public record Condition(ConditionType cond) {
 
-    public Condition(ConditionType cond) {
-        this.cond = cond;
-    }
-
-    public ConditionType getCond() {
-        return cond;
-    }
 }

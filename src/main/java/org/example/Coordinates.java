@@ -34,15 +34,10 @@ public class Coordinates {
         if (o == this){
             return true;
         }
-        if (!(o instanceof Coordinates)){
+        if (!(o instanceof Coordinates c)){
             return false;
         }
-        Coordinates c = (Coordinates) o;
-        if (x == c.getX() && y == c.getY() && direction == c.getDirection()){
-            return true;
-        } else {
-            return false;
-        }
+        return x == c.getX() && y == c.getY() && direction == c.getDirection();
     }
 
     @Override
