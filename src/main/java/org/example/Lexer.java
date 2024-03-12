@@ -26,38 +26,41 @@ public class Lexer {
         while (pos < str.length() && (str.charAt(pos) == ' ' || str.charAt(pos) == '\n' || str.charAt(pos) == '\t')){
             if (str.charAt(pos) == '\n'){
                 line++;
-                linePos = 0;
+                linePos = 1;
+            } else if (str.charAt(pos) == '\t'){
+                linePos += 4;
+            } else if (str.charAt(pos) == ' '){
+                linePos++;
             }
-            linePos++;
             pos++;
         }
         if (pos >= str.length()){
-            return new Token(line, linePos, TokenType.END);
+            return new Token(line, linePos-1, TokenType.END);
         }
         if (str.charAt(pos) == '('){
             pos++;
             linePos++;
-            return new Token(line, linePos, TokenType.ROUND_BR_OPEN);
+            return new Token(line, linePos-1, TokenType.ROUND_BR_OPEN);
         }
         if (str.charAt(pos) == ')'){
             pos++;
             linePos++;
-            return new Token(line, linePos, TokenType.ROUND_BR_CLOSE);
+            return new Token(line, linePos-1, TokenType.ROUND_BR_CLOSE);
         }
         if (str.charAt(pos) == '{'){
             pos++;
             linePos++;
-            return new Token(line, linePos, TokenType.CURLY_BR_OPEN);
+            return new Token(line, linePos-1, TokenType.CURLY_BR_OPEN);
         }
         if (str.charAt(pos) == '}'){
             pos++;
             linePos++;
-            return new Token(line, linePos, TokenType.CURLY_BR_CLOSE);
+            return new Token(line, linePos-1, TokenType.CURLY_BR_CLOSE);
         }
         if (str.charAt(pos) == ';'){
             pos++;
             linePos++;
-            return new Token(line, linePos, TokenType.SEMICOLON);
+            return new Token(line, linePos-1, TokenType.SEMICOLON);
         }
         if ((str.charAt(pos) >= 'a' && str.charAt(pos) <= 'z') || (str.charAt(pos) >= 'A' && str.charAt(pos) <= 'Z')){
             int len = 0;
@@ -69,17 +72,17 @@ public class Lexer {
             String name = str.substring(pos-len, pos);
             switch (name){
                 case "if":
-                    return new Token(line, linePos, TokenType.IF);
+                    return new Token(line, linePos-1, TokenType.IF);
                 case "else":
-                    return new Token(line, linePos, TokenType.ELSE);
+                    return new Token(line, linePos-1, TokenType.ELSE);
                 case "repeat":
-                    return new Token(line, linePos, TokenType.REPEAT);
+                    return new Token(line, linePos-1, TokenType.REPEAT);
                 case "while":
-                    return new Token(line, linePos, TokenType.WHILE);
+                    return new Token(line, linePos-1, TokenType.WHILE);
                 case "function":
-                    return new Token(line, linePos, TokenType.FUNCTION);
+                    return new Token(line, linePos-1, TokenType.FUNCTION);
                 default:
-                    return new Token(line, linePos, name);
+                    return new Token(line, linePos-1, name);
             }
         }
         if (str.charAt(pos) >= '0' && str.charAt(pos) <= '9'){
@@ -90,7 +93,7 @@ public class Lexer {
                 len++;
             }
             String value = str.substring(pos-len, pos);
-            return new Token(line, linePos, Integer.parseInt(value));
+            return new Token(line, linePos-1, Integer.parseInt(value));
         }
         throw new UnexpectedTokenException(new Token(line, linePos, TokenType.UNEXPECTED, str.substring(pos, pos+1)));
     }

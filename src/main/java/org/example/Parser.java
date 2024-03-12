@@ -59,6 +59,7 @@ public class Parser {
         if (next.getType() != TokenType.NAME){
             throw new UnexpectedTokenException(next, "Condition name");
         }
+        Token nameToken = next;
         String name = next.getName();
         next = lex.nextToken();
         if (next.getType() != TokenType.ROUND_BR_OPEN){
@@ -106,45 +107,8 @@ public class Parser {
             case "notFacingWest":
                 return new Condition(ConditionType.NOT_FACING_WEST);
             default:
-                throw new UnexpectedTokenException(next, "Condition name");
+                throw new UnexpectedTokenException(nameToken, "Condition name");
         }
-    }
-
-    public Operation parseOperationStatement(Lexer lex){
-        Token next = lex.nextToken();
-        if (next.getType() != TokenType.NAME){
-            throw new UnexpectedTokenException(next, "Operation name");
-        }
-        Operation operation;
-        switch (next.getName()){
-            case "move":
-                operation = Operation.MOVE;
-                break;
-            case "turnLeft":
-                operation = Operation.TURN_LEFT;
-                break;
-            case "putBeeper":
-                operation = Operation.PUT_BEEPER;
-                break;
-            case "pickBeeper":
-                operation = Operation.PICK_BEEPER;
-                break;
-            default:
-                throw new UnexpectedTokenException(next, "Operation name");
-        }
-        next = lex.nextToken();
-        if (next.getType() != TokenType.ROUND_BR_OPEN){
-            throw new UnexpectedTokenException(next, "(");
-        }
-        next = lex.nextToken();
-        if (next.getType() != TokenType.ROUND_BR_CLOSE) {
-            throw new UnexpectedTokenException(next, ")");
-        }
-        next = lex.nextToken();
-        if (next.getType() != TokenType.SEMICOLON) {
-            throw new UnexpectedTokenException(next, ";");
-        }
-        return operation;
     }
 
     public Node parseBody(Lexer lex){
@@ -155,6 +119,9 @@ public class Parser {
                 throw new UnexpectedTokenException(next, "(");
             }
             next = lex.nextToken();
+            if (next.getType() != TokenType.NUMBER){
+                throw new UnexpectedTokenException(next, "number");
+            }
             int count = next.getValue();
             next = lex.nextToken();
             if (next.getType() != TokenType.ROUND_BR_CLOSE){
