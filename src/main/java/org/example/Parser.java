@@ -50,6 +50,8 @@ package org.example;
                             notFacingWest()
  */
 
+import org.example.conditions.*;
+
 public class Parser {
     public Condition parseCondition(Lexer lex){
         Token next = lex.nextToken();
@@ -67,24 +69,24 @@ public class Parser {
             throw new UnexpectedTokenException(next, ")");
         }
         return switch (name) {
-            case "frontIsClear" -> new Condition(ConditionType.FRONT_IS_CLEAR);
-            case "frontIsBlocked" -> new Condition(ConditionType.FRONT_IS_BLOCKED);
-            case "leftIsClear" -> new Condition(ConditionType.LEFT_IS_CLEAR);
-            case "leftIsBlocked" -> new Condition(ConditionType.LEFT_IS_BLOCKED);
-            case "rightIsClear" -> new Condition(ConditionType.RIGHT_IS_CLEAR);
-            case "rightIsBlocked" -> new Condition(ConditionType.RIGHT_IS_BLOCKED);
-            case "beepersPresent" -> new Condition(ConditionType.BEEPERS_PRESENT);
-            case "noBeepersPresent" -> new Condition(ConditionType.NO_BEEPERS_PRESENT);
-            case "beepersInBag" -> new Condition(ConditionType.BEEPERS_IN_BAG);
-            case "noBeepersInBag" -> new Condition(ConditionType.NO_BEEPERS_IN_BAG);
-            case "facingNorth" -> new Condition(ConditionType.FACING_NORTH);
-            case "notFacingNorth" -> new Condition(ConditionType.NOT_FACING_NORTH);
-            case "facingEast" -> new Condition(ConditionType.FACING_EAST);
-            case "notFacingEast" -> new Condition(ConditionType.NOT_FACING_EAST);
-            case "facingSouth" -> new Condition(ConditionType.FACING_SOUTH);
-            case "notFacingSouth" -> new Condition(ConditionType.NOT_FACING_SOUTH);
-            case "facingWest" -> new Condition(ConditionType.FACING_WEST);
-            case "notFacingWest" -> new Condition(ConditionType.NOT_FACING_WEST);
+            case "frontIsClear" -> new FrontIsClearCondition();
+            case "frontIsBlocked" -> new FrontIsBlockedCondition();
+            case "leftIsClear" -> new LeftIsClearCondition();
+            case "leftIsBlocked" -> new LeftIsBlockedCondition();
+            case "rightIsClear" -> new RightIsClearCondition();
+            case "rightIsBlocked" -> new RightIsBlockedCondition();
+            case "beepersPresent" -> new BeepersPresentCondition();
+            case "noBeepersPresent" -> new NoBeepersPresentCondition();
+            case "beepersInBag" -> new BeepersInBagCondition();
+            case "noBeepersInBag" -> new NoBeepersInBagCondition();
+            case "facingNorth" -> new FacingNorthCondition();
+            case "notFacingNorth" -> new NotFacingNorthCondition();
+            case "facingEast" -> new FacingEastCondition();
+            case "notFacingEast" -> new NotFacingEastCondition();
+            case "facingSouth" -> new FacingSouthCondition();
+            case "notFacingSouth" -> new NotFacingSouthCondition();
+            case "facingWest" -> new FacingWestCondition();
+            case "notFacingWest" -> new NotFacingWestCondition();
             default -> throw new UnexpectedTokenException(nameToken, "Condition name");
         };
     }

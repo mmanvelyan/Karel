@@ -1,5 +1,7 @@
 package org.example;
 
+import org.example.conditions.Condition;
+
 import java.util.Map;
 
 public class RunNodeVisitor implements NodeVisitor {
@@ -19,7 +21,7 @@ public class RunNodeVisitor implements NodeVisitor {
     @Override
     public KarelMap accept(IfNode node, KarelMap map, Functions functions) {
         Condition condition = node.getCond();
-        if (map.checkCondition(condition)){
+        if (condition.check(map)){
             map = node.getNodeIf().accept(this, map, functions);
         } else {
             map = node.getNodeElse().accept(this, map, functions);
@@ -57,7 +59,7 @@ public class RunNodeVisitor implements NodeVisitor {
                 }
                 BeepersMap beepersMap = map.getBeepersMap();
                 Map<Coordinates, Integer> beepers = beepersMap.getBeepers();
-                beepers.put(rp.getPosition(), beepersMap.getBeepersCount(rp.getPosition())+1);
+                beepers.put(rp.getPosition().toNorth(), beepersMap.getBeepersCount(rp.getPosition())+1);
                 map = new KarelMap(map.getWallsMap(), new BeepersMap(beepers), new RobotPosition(rp.getPosition(), rp.getBag()-1));
             }
             case PICK_BEEPER -> {
@@ -68,7 +70,7 @@ public class RunNodeVisitor implements NodeVisitor {
                     throw new RuntimeException();
                 }
                 Map<Coordinates, Integer> beepers = beepersMap.getBeepers();
-                beepers.put(rp.getPosition(), b-1);
+                beepers.put(rp.getPosition().toNorth(), b-1);
                 map = new KarelMap(map.getWallsMap(), new BeepersMap(beepers), new RobotPosition(rp.getPosition(), rp.getBag()+1));
             }
         }
@@ -78,7 +80,7 @@ public class RunNodeVisitor implements NodeVisitor {
     @Override
     public KarelMap accept(WhileNode node, KarelMap map, Functions functions) {
         Condition condition = node.getCond();
-        while (map.checkCondition(condition)){
+        while (condition.check(map)){
             map = node.getNode().accept(this, map, functions);
         }
         return node.getNext().accept(this, map, functions);

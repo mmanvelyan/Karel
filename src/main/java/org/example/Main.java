@@ -51,10 +51,8 @@ public class Main {
         walls.add(new Coordinates(7, 1, Direction.EAST));
         System.out.println(walls.contains(new Coordinates(7, 3, Direction.EAST)));
         KarelMap km = new KarelMap(9, 9, 1, 1, 0, Direction.EAST, beepers, walls);
-        km.print();
         System.out.println(program);
         Node start = new FunctionCallNode("main", new EmptyNode());
         start.accept(new RunNodeVisitor(), km, functions);
-        km.print();
     }
 }

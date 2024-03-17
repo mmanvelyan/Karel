@@ -11,13 +11,13 @@ import static org.example.Direction.*;
 
 public class RunTest {
 
-    private void run(String program, KarelMap map){
+    private KarelMap run(String program, KarelMap map){
         Functions functions = new Functions();
         Parser parser = new Parser();
         Lexer lex = new Lexer(program);
         parser.parse(lex, functions);
         Node main = functions.getFunction("main");
-        main.accept(new RunNodeVisitor(), map, functions);
+        return main.accept(new RunNodeVisitor(), map, functions);
     }
 
     @Test
@@ -28,7 +28,7 @@ public class RunTest {
                 }
                 """;
         KarelMap map = new KarelMap(5, 5, 1, 1, 0, EAST, new HashMap<>(), new HashSet<>());
-        run(program, map);
+        map = run(program, map);
         Assertions.assertEquals(2, map.getX());
         Assertions.assertEquals(1, map.getY());
         Assertions.assertEquals(0, map.getBag());
@@ -43,7 +43,7 @@ public class RunTest {
                 }
                 """;
         KarelMap map = new KarelMap(5, 5, 1, 1, 0, EAST, new HashMap<>(), new HashSet<>());
-        run(program, map);
+        map = run(program, map);
         Assertions.assertEquals(1, map.getX());
         Assertions.assertEquals(1, map.getY());
         Assertions.assertEquals(0, map.getBag());
@@ -58,11 +58,11 @@ public class RunTest {
                 }
                 """;
         KarelMap map = new KarelMap(5, 5, 1, 1, 1, EAST, new HashMap<>(), new HashSet<>());
-        run(program, map);
+        map = run(program, map);
         Assertions.assertEquals(1, map.getX());
         Assertions.assertEquals(1, map.getY());
         Assertions.assertEquals(0, map.getBag());
-        Assertions.assertEquals(1, map.getBeepers().get(new Coordinates(1, 1)));
+        Assertions.assertEquals(1, map.getBeepersMap().getBeepersCount(new Coordinates(1, 1)));
         Assertions.assertEquals(EAST, map.getDirection());
     }
 
@@ -76,11 +76,11 @@ public class RunTest {
         Map<Coordinates, Integer> beepers = new HashMap<>();
         beepers.put(new Coordinates(1, 1), 1);
         KarelMap map = new KarelMap(5, 5, 1, 1, 0, EAST, beepers, new HashSet<>());
-        run(program, map);
+        map = run(program, map);
         Assertions.assertEquals(1, map.getX());
         Assertions.assertEquals(1, map.getY());
         Assertions.assertEquals(1, map.getBag());
-        Assertions.assertEquals(0, map.getBeepers().get(new Coordinates(1, 1)));
+        Assertions.assertEquals(0, map.getBeepersMap().getBeepersCount(1, 1));
         Assertions.assertEquals(EAST, map.getDirection());
     }
 
@@ -94,11 +94,11 @@ public class RunTest {
                 }
                 """;
         KarelMap map = new KarelMap(5, 5, 1, 1, 1, EAST, new HashMap<>(), new HashSet<>());
-        run(program, map);
+        map = run(program, map);
         Assertions.assertEquals(1, map.getX());
         Assertions.assertEquals(1, map.getY());
         Assertions.assertEquals(0, map.getBag());
-        Assertions.assertEquals(1, map.getBeepers().get(new Coordinates(1, 1)));
+        Assertions.assertEquals(1, map.getBeepersMap().getBeepersCount(1, 1));
         Assertions.assertEquals(EAST, map.getDirection());
     }
 
@@ -112,11 +112,11 @@ public class RunTest {
                 }
                 """;
         KarelMap map = new KarelMap(5, 5, 1, 1, 0, EAST, new HashMap<>(), new HashSet<>());
-        run(program, map);
+        map = run(program, map);
         Assertions.assertEquals(1, map.getX());
         Assertions.assertEquals(1, map.getY());
         Assertions.assertEquals(0, map.getBag());
-        Assertions.assertNull(map.getBeepers().get(new Coordinates(1, 1)));
+        Assertions.assertEquals(0,map.getBeepersMap().getBeepersCount(new Coordinates(1, 1)));
         Assertions.assertEquals(EAST, map.getDirection());
     }
 
@@ -132,11 +132,11 @@ public class RunTest {
                 }
                 """;
         KarelMap map = new KarelMap(5, 5, 1, 1, 0, EAST, new HashMap<>(), new HashSet<>());
-        run(program, map);
+        map = run(program, map);
         Assertions.assertEquals(2, map.getX());
         Assertions.assertEquals(1, map.getY());
         Assertions.assertEquals(0, map.getBag());
-        Assertions.assertNull(map.getBeepers().get(new Coordinates(1, 1)));
+        Assertions.assertEquals(0, map.getBeepersMap().getBeepersCount(new Coordinates(1, 1)));
         Assertions.assertEquals(EAST, map.getDirection());
     }
 
@@ -150,7 +150,7 @@ public class RunTest {
                 }
                 """;
         KarelMap map = new KarelMap(5, 5, 1, 1, 0, EAST, new HashMap<>(), new HashSet<>());
-        run(program, map);
+        map = run(program, map);
         Assertions.assertEquals(5, map.getX());
         Assertions.assertEquals(1, map.getY());
         Assertions.assertEquals(0, map.getBag());
@@ -167,7 +167,7 @@ public class RunTest {
                 }
                 """;
         KarelMap map = new KarelMap(5, 5, 1, 1, 0, EAST, new HashMap<>(), new HashSet<>());
-        run(program, map);
+        map = run(program, map);
         Assertions.assertEquals(4, map.getX());
         Assertions.assertEquals(1, map.getY());
         Assertions.assertEquals(0, map.getBag());
@@ -188,7 +188,7 @@ public class RunTest {
                 }
                 """;
         KarelMap map = new KarelMap(5, 5, 1, 1, 0, EAST, new HashMap<>(), new HashSet<>());
-        run(program, map);
+        map = run(program, map);
         Assertions.assertEquals(1, map.getX());
         Assertions.assertEquals(1, map.getY());
         Assertions.assertEquals(0, map.getBag());

@@ -1,5 +1,7 @@
 package org.example;
 
+import org.example.conditions.Condition;
+
 public class IfNode implements Node{
     private final Condition cond;
     private final Node nodeIf;
@@ -13,8 +15,8 @@ public class IfNode implements Node{
         this.next = next;
     }
 
-    public void accept(NodeVisitor visitor, KarelMap map, Functions functions){
-        visitor.accept(this, map, functions);
+    public KarelMap accept(NodeVisitor visitor, KarelMap map, Functions functions){
+        return visitor.accept(this, map, functions);
     }
 
     public Condition getCond() {

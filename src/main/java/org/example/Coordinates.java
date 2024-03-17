@@ -35,6 +35,10 @@ public class Coordinates {
         };
     }
 
+    public Coordinates toNorth(){
+        return new Coordinates(x, y, Direction.NORTH);
+    }
+
     public Coordinates getRight(){
         return this.getLeft().getLeft().getLeft();
     }

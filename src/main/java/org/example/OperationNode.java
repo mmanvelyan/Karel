@@ -1,6 +1,6 @@
 package org.example;
 
-public class OperationNode implements Node{
+public class OperationNode implements Node {
     private final Operation operation;
 
     private final Node next;
@@ -10,8 +10,9 @@ public class OperationNode implements Node{
         this.next = next;
     }
 
-    public void accept(NodeVisitor visitor, KarelMap map, Functions functions){
-        visitor.accept(this, map, functions);
+    @Override
+    public KarelMap accept(NodeVisitor visitor, KarelMap map, Functions functions){
+        return visitor.accept(this, map, functions);
     }
 
     public Operation getOperation() {
