@@ -4,87 +4,35 @@ import java.util.Map;
 import java.util.Set;
 
 public class KarelMap {
-    private final int rows;
-    private final int cols;
-    private int x;
-    private int y;
-    private int bag;
-    private Direction direction;
-    private final Map<Coordinates, Integer> beepers;
-    private final Set<Coordinates> walls;
+
+    private final WallsMap wallsMap;
+    private final BeepersMap beepersMap;
+    private final RobotPosition robotPosition;
+
+    public KarelMap(WallsMap wallsMap, BeepersMap beepersMap, RobotPosition robotPosition) {
+        this.wallsMap = wallsMap;
+        this.beepersMap = beepersMap;
+        this.robotPosition = robotPosition;
+    }
 
     public KarelMap(int rows, int cols, int x, int y, int bag, Direction direction, Map<Coordinates, Integer> beepers, Set<Coordinates> walls) {
-        this.rows = rows;
-        this.cols = cols;
-        this.x = x;
-        this.y = y;
-        this.bag = bag;
-        this.direction = direction;
-        this.beepers = beepers;
-        this.walls = walls;
+        this(new WallsMap(rows, cols, walls), new BeepersMap(beepers), new RobotPosition(x, y, direction, bag));
     }
 
-    public void move(){
-        switch (direction) {
-            case NORTH -> {
-                if (y == rows || walls.contains(new Coordinates(x, y, Direction.NORTH)) || walls.contains(new Coordinates(x, y + 1, Direction.SOUTH))) {
-                    throw new RuntimeException();
-                }
-                y++;
-            }
-            case EAST -> {
-                if (x == cols || walls.contains(new Coordinates(x, y, Direction.EAST)) || walls.contains(new Coordinates(x + 1, y, Direction.WEST))) {
-                    throw new RuntimeException();
-                }
-                x++;
-            }
-            case SOUTH -> {
-                if (y == 1 || walls.contains(new Coordinates(x, y - 1, Direction.NORTH)) || walls.contains(new Coordinates(x, y, Direction.SOUTH))) {
-                    throw new RuntimeException();
-                }
-                y--;
-            }
-            case WEST -> {
-                if (x == 1 || walls.contains(new Coordinates(x - 1, y, Direction.EAST)) || walls.contains(new Coordinates(x, y, Direction.WEST))) {
-                    throw new RuntimeException();
-                }
-                x--;
-            }
-        }
-        this.print();
+    public KarelMap(int rows, int cols, int x, int y, int bag, Direction direction){
+        this(new WallsMap(rows, cols), new BeepersMap(), new RobotPosition(x, y, direction, bag));
     }
 
-    public void turnLeft(){
-        switch (direction) {
-            case NORTH -> direction = Direction.WEST;
-            case EAST -> direction = Direction.NORTH;
-            case SOUTH -> direction = Direction.EAST;
-            case WEST -> direction = Direction.SOUTH;
-        }
-        this.print();
+    public KarelMap(int rows, int cols, Coordinates pos, int bag, Map<Coordinates, Integer> beepers, Set<Coordinates> walls){
+        this(new WallsMap(rows, cols, walls), new BeepersMap(beepers), new RobotPosition(pos, bag));
     }
 
-    public void putBeeper(){
-        if (bag == 0){
-            throw new RuntimeException();
-        }
-        bag--;
-        if (beepers.get(new Coordinates(x, y)) == null){
-            beepers.put(new Coordinates(x, y), 1);
-        } else {
-            beepers.put(new Coordinates(x, y), beepers.get(new Coordinates(x, y))+1);
-        }
-        this.print();
+    public boolean hasWall(int x, int y, Direction direction){
+        return wallsMap.hasWall(x, y, direction);
     }
 
-    public void pickBeeper(){
-        if (beepers.get(new Coordinates(x, y)) == null || beepers.get(new Coordinates(x, y)) == 0){
-            throw new RuntimeException();
-        } else {
-            beepers.put(new Coordinates(x, y), beepers.get(new Coordinates(x, y))-1);
-            bag++;
-        }
-        this.print();
+    public boolean hasWall(Coordinates coordinates){
+        return hasWall(coordinates.getX(), coordinates.getY(), coordinates.getDirection());
     }
 
     private boolean northBlocked(){
@@ -287,36 +235,24 @@ public class KarelMap {
         System.out.println();
     }
 
-    public int getRows() {
-        return rows;
+    public WallsMap getWallsMap() {
+        return wallsMap;
     }
 
-    public int getCols() {
-        return cols;
+    public BeepersMap getBeepersMap() {
+        return beepersMap;
     }
 
-    public int getX() {
-        return x;
+    public RobotPosition getRobotPosition() {
+        return robotPosition;
     }
 
-    public int getY() {
-        return y;
+    public int getRows(){
+        return wallsMap.getRows();
     }
 
-    public int getBag() {
-        return bag;
-    }
-
-    public Direction getDirection() {
-        return direction;
-    }
-
-    public Map<Coordinates, Integer> getBeepers() {
-        return beepers;
-    }
-
-    public Set<Coordinates> getWalls() {
-        return walls;
+    public int getCols(){
+        return wallsMap.getCols();
     }
 }
 

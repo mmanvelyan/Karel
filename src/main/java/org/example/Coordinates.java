@@ -17,6 +17,28 @@ public class Coordinates {
         this(x, y, Direction.NORTH);
     }
 
+    public Coordinates getLeft(){
+        return switch (direction){
+            case EAST -> new Coordinates(x, y, Direction.NORTH);
+            case SOUTH -> new Coordinates(x, y, Direction.EAST);
+            case WEST -> new Coordinates(x, y, Direction.SOUTH);
+            case NORTH -> new Coordinates(x, y, Direction.WEST);
+        };
+    }
+
+    public Coordinates getNext(){
+        return switch (direction){
+            case EAST -> new Coordinates(x+1, y, Direction.EAST);
+            case SOUTH -> new Coordinates(x, y-1, Direction.SOUTH);
+            case WEST -> new Coordinates(x-1, y, Direction.WEST);
+            case NORTH -> new Coordinates(x, y+1, Direction.NORTH);
+        };
+    }
+
+    public Coordinates getRight(){
+        return this.getLeft().getLeft().getLeft();
+    }
+
     public int getX() {
         return x;
     }

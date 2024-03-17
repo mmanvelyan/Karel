@@ -22,6 +22,10 @@ public class BeepersMap {
         }
     }
 
+    public int getBeepersCount(Coordinates c){
+        return getBeepersCount(c.getX(), c.getY());
+    }
+
     public Map<Coordinates, Integer> getBeepers() {
         return new HashMap<>(beepers);
     }

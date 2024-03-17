@@ -26,4 +26,12 @@ public class WallsMap {
             case WEST -> (x == 1) || walls.contains(new Coordinates(x, y, Direction.WEST)) || walls.contains(new Coordinates(x-1, y, Direction.SOUTH));
         };
     }
+
+    public int getRows() {
+        return rows;
+    }
+
+    public int getCols() {
+        return cols;
+    }
 }

@@ -1,55 +1,86 @@
 package org.example;
 
+import java.util.Map;
+
 public class RunNodeVisitor implements NodeVisitor {
     @Override
-    public void accept(EmptyNode node, KarelMap map, Functions functions) {
-
+    public KarelMap accept(EmptyNode node, KarelMap map, Functions functions) {
+        return map;
     }
 
     @Override
-    public void accept(FunctionCallNode node, KarelMap map, Functions functions) {
+    public KarelMap accept(FunctionCallNode node, KarelMap map, Functions functions) {
         String name = node.getFuncName();
         Node function = functions.getFunction(name);
-        function.accept(this, map, functions);
-        node.getNext().accept(this, map, functions);
+        map = function.accept(this, map, functions);
+        return node.getNext().accept(this, map, functions);
     }
 
     @Override
-    public void accept(IfNode node, KarelMap map, Functions functions) {
+    public KarelMap accept(IfNode node, KarelMap map, Functions functions) {
         Condition condition = node.getCond();
         if (map.checkCondition(condition)){
-            node.getNodeIf().accept(this, map, functions);
+            map = node.getNodeIf().accept(this, map, functions);
         } else {
-            node.getNodeElse().accept(this, map, functions);
+            map = node.getNodeElse().accept(this, map, functions);
         }
-        node.getNext().accept(this, map, functions);
+        return node.getNext().accept(this, map, functions);
     }
 
     @Override
-    public void accept(RepeatNode node, KarelMap map, Functions functions) {
+    public KarelMap accept(RepeatNode node, KarelMap map, Functions functions) {
         for (int i = 0; i < node.getCount(); i++){
-            node.getNode().accept(this, map, functions);
+            map = node.getNode().accept(this, map, functions);
         }
-        node.getNext().accept(this, map, functions);
+        return node.getNext().accept(this, map, functions);
     }
 
     @Override
-    public void accept(OperationNode node, KarelMap map, Functions functions) {
+    public KarelMap accept(OperationNode node, KarelMap map, Functions functions) {
         switch (node.getOperation()){
-            case MOVE -> map.move();
-            case TURN_LEFT -> map.turnLeft();
-            case PUT_BEEPER -> map.putBeeper();
-            case PICK_BEEPER -> map.pickBeeper();
+            case MOVE -> {
+                RobotPosition rp = map.getRobotPosition();
+                if (map.hasWall(rp.getPosition())){
+                    throw new RuntimeException();
+                } else {
+                    map = new KarelMap(map.getWallsMap(), map.getBeepersMap(), new RobotPosition(rp.getPosition().getNext(), rp.getBag()));
+                }
+            }
+            case TURN_LEFT -> {
+                RobotPosition rp = map.getRobotPosition();
+                map = new KarelMap(map.getWallsMap(), map.getBeepersMap(), new RobotPosition(rp.getPosition().getLeft(), rp.getBag()));
+            }
+            case PUT_BEEPER -> {
+                RobotPosition rp = map.getRobotPosition();
+                if (rp.getBag() == 0){
+                    throw new RuntimeException();
+                }
+                BeepersMap beepersMap = map.getBeepersMap();
+                Map<Coordinates, Integer> beepers = beepersMap.getBeepers();
+                beepers.put(rp.getPosition(), beepersMap.getBeepersCount(rp.getPosition())+1);
+                map = new KarelMap(map.getWallsMap(), new BeepersMap(beepers), new RobotPosition(rp.getPosition(), rp.getBag()-1));
+            }
+            case PICK_BEEPER -> {
+                RobotPosition rp = map.getRobotPosition();
+                BeepersMap beepersMap = map.getBeepersMap();
+                int b = beepersMap.getBeepersCount(rp.getPosition());
+                if (b == 0){
+                    throw new RuntimeException();
+                }
+                Map<Coordinates, Integer> beepers = beepersMap.getBeepers();
+                beepers.put(rp.getPosition(), b-1);
+                map = new KarelMap(map.getWallsMap(), new BeepersMap(beepers), new RobotPosition(rp.getPosition(), rp.getBag()+1));
+            }
         }
-        node.getNext().accept(this, map, functions);
+        return node.getNext().accept(this, map, functions);
     }
 
     @Override
-    public void accept(WhileNode node, KarelMap map, Functions functions) {
+    public KarelMap accept(WhileNode node, KarelMap map, Functions functions) {
         Condition condition = node.getCond();
         while (map.checkCondition(condition)){
-            node.getNode().accept(this, map, functions);
+            map = node.getNode().accept(this, map, functions);
         }
-        node.getNext().accept(this, map, functions);
+        return node.getNext().accept(this, map, functions);
     }
 }

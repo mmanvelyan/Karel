@@ -1,7 +1,7 @@
 package org.example;
 
 public class RobotPosition {
-    Coordinates position;
+    private final Coordinates position;
     private final int bag;
 
     public RobotPosition(Coordinates position, int bag){
@@ -19,6 +19,10 @@ public class RobotPosition {
 
     public int getY(){
         return position.getY();
+    }
+
+    public Coordinates getPosition() {
+        return position;
     }
 
     public Direction getDirection(){
