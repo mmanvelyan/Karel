@@ -1,7 +1,8 @@
 package org.example;
 
-import java.util.Map;
-import java.util.Set;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.*;
 
 import static org.example.Direction.*;
 
@@ -27,6 +28,57 @@ public class KarelMap {
 
     public KarelMap(int rows, int cols, Coordinates pos, int bag, Map<Coordinates, Integer> beepers, Set<Coordinates> walls){
         this(new WallsMap(rows, cols, walls), new BeepersMap(beepers), new RobotPosition(pos, bag));
+    }
+
+    public KarelMap(File file) throws FileNotFoundException {
+        Scanner input = new Scanner(file);
+        int rows = input.nextInt();
+        int cols = input.nextInt();
+        int x = input.nextInt();
+        int y = input.nextInt();
+        String dirs = input.next();
+        Direction dir;
+        if (Objects.equals(dirs, "N")){
+            dir = NORTH;
+        } else if (Objects.equals(dirs, "E")){
+            dir = EAST;
+        } else if (Objects.equals(dirs, "S")){
+            dir = SOUTH;
+        } else if (Objects.equals(dirs, "W")){
+            dir = WEST;
+        } else {
+            throw new InputMismatchException();
+        }
+        int bag = input.nextInt();
+        Set<Coordinates> walls = new HashSet<>();
+        Map<Coordinates, Integer> beepers = new HashMap<>();
+        while (input.hasNext()){
+            String type = input.next();
+            int a = input.nextInt();
+            int b = input.nextInt();
+            if (Objects.equals(type, "B")){
+                int beep = input.nextInt();
+                beepers.put(new Coordinates(a, b), beep);
+            } else if (Objects.equals(type, "W")){
+                String d = input.next();
+                if (Objects.equals(d, "N")){
+                    walls.add(new Coordinates(a, b, NORTH));
+                } else if (Objects.equals(d, "E")){
+                    walls.add(new Coordinates(a, b, EAST));
+                } else if (Objects.equals(d, "S")){
+                    walls.add(new Coordinates(a, b, SOUTH));
+                } else if (Objects.equals(d, "W")){
+                    walls.add(new Coordinates(a, b, WEST));
+                } else {
+                    throw new InputMismatchException();
+                }
+            } else {
+                throw new InputMismatchException();
+            }
+        }
+        wallsMap = new WallsMap(rows, cols, walls);
+        beepersMap = new BeepersMap(beepers);
+        robotPosition = new RobotPosition(x, y, dir, bag);
     }
 
     public boolean hasWall(int x, int y, Direction direction){
