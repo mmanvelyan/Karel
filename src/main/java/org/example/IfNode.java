@@ -1,6 +1,6 @@
 package org.example;
 
-import org.example.conditions.Condition;
+import org.example.condition.Condition;
 
 public class IfNode implements Node{
     private final Condition cond;

@@ -50,7 +50,7 @@ package org.example;
                             notFacingWest()
  */
 
-import org.example.conditions.*;
+import org.example.condition.*;
 
 public class Parser {
     public Condition parseCondition(Lexer lex){

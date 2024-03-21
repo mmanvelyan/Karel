@@ -1,4 +1,4 @@
-package org.example.conditions;
+package org.example.condition;
 
 import org.example.Direction;
 import org.example.KarelMap;
