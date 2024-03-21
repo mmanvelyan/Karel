@@ -53,6 +53,7 @@ public class Main {
         KarelMap km = new KarelMap(9, 9, 1, 1, 0, Direction.EAST, beepers, walls);
         System.out.println(program);
         Node start = new FunctionCallNode("main", new EmptyNode());
-        start.accept(new RunNodeVisitor(), km, functions);
+        km = start.accept(new RunNodeVisitor(), km, functions);
+        km.print();
     }
 }
