@@ -30,7 +30,7 @@ public class KarelMap {
         this(new WallsMap(rows, cols, walls), new BeepersMap(beepers), new RobotPosition(pos, bag));
     }
 
-    public KarelMap(File file) throws FileNotFoundException {
+    public KarelMap(String file) {
         Scanner input = new Scanner(file);
         int rows = input.nextInt();
         int cols = input.nextInt();
