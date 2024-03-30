@@ -1,7 +1,5 @@
 package org.example;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.*;
 
 import static org.example.Direction.*;
@@ -30,12 +28,38 @@ public class KarelMap {
         this(new WallsMap(rows, cols, walls), new BeepersMap(beepers), new RobotPosition(pos, bag));
     }
 
-    public KarelMap(File file) throws FileNotFoundException {
-        Scanner input = new Scanner(file);
-        int rows = input.nextInt();
-        int cols = input.nextInt();
-        int x = input.nextInt();
-        int y = input.nextInt();
+    public KarelMap(String map) {
+        Scanner input = new Scanner(map);
+        int rows;
+        if (input.hasNextInt()){
+            rows = input.nextInt();
+        } else {
+            throw new InvalidMapException();
+        }
+        int cols;
+        if (input.hasNextInt()) {
+            cols = input.nextInt();
+        } else {
+            throw new InvalidMapException();
+        }
+        if (rows < 1 || cols < 1){
+            throw new InvalidMapException();
+        }
+        int x;
+        if (input.hasNextInt()) {
+            x = input.nextInt();
+        } else {
+            throw new InvalidMapException();
+        }
+        int y;
+        if (input.hasNextInt()) {
+            y = input.nextInt();
+        } else {
+            throw new InvalidMapException();
+        }
+        if (x > cols || x < 1 || y > rows || y < 1){
+            throw new InvalidMapException();
+        }
         String dirs = input.next();
         Direction dir;
         if (Objects.equals(dirs, "N")){
@@ -47,19 +71,51 @@ public class KarelMap {
         } else if (Objects.equals(dirs, "W")){
             dir = WEST;
         } else {
-            throw new InputMismatchException();
+            throw new InvalidMapException();
         }
-        int bag = input.nextInt();
+        int bag;
+        if (input.hasNextInt()) {
+            bag = input.nextInt();
+        } else {
+            throw new InvalidMapException();
+        }
+        if (bag < 0){
+            throw new InvalidMapException();
+        }
         Set<Coordinates> walls = new HashSet<>();
         Map<Coordinates, Integer> beepers = new HashMap<>();
         while (input.hasNext()){
             String type = input.next();
-            int a = input.nextInt();
-            int b = input.nextInt();
+            int a;
+            if (input.hasNextInt()) {
+                a = input.nextInt();
+            } else {
+                throw new InvalidMapException();
+            }
+            int b;
+            if (input.hasNextInt()) {
+                b = input.nextInt();
+            } else {
+                throw new InvalidMapException();
+            }
+            if (a < 1 || a > cols || b < 1 || b > cols){
+                throw new InvalidMapException();
+            }
             if (Objects.equals(type, "B")){
-                int beep = input.nextInt();
+                int beep;
+                if (input.hasNextInt()) {
+                    beep = input.nextInt();
+                } else {
+                    throw new InvalidMapException();
+                }
+                if (beep < 0){
+                    throw new InvalidMapException();
+                }
                 beepers.put(new Coordinates(a, b), beep);
             } else if (Objects.equals(type, "W")){
+                if (!input.hasNext()){
+                    throw new InvalidMapException();
+                }
                 String d = input.next();
                 if (Objects.equals(d, "N")){
                     walls.add(new Coordinates(a, b, NORTH));
@@ -70,10 +126,10 @@ public class KarelMap {
                 } else if (Objects.equals(d, "W")){
                     walls.add(new Coordinates(a, b, WEST));
                 } else {
-                    throw new InputMismatchException();
+                    throw new InvalidMapException();
                 }
             } else {
-                throw new InputMismatchException();
+                throw new InvalidMapException();
             }
         }
         wallsMap = new WallsMap(rows, cols, walls);
@@ -196,9 +252,13 @@ public class KarelMap {
                 } else {
                     int x = beepersMap.getBeepersCount(new Coordinates(j / 2, i / 2));
                     if (x > 0) {
-                        System.out.print(" ");
+                        if (x < 100) {
+                            System.out.print(" ");
+                        }
                         System.out.print(x);
-                        System.out.print(" ");
+                        if (x < 10) {
+                            System.out.print(" ");
+                        }
                     } else {
                         System.out.print(" . ");
                     }
