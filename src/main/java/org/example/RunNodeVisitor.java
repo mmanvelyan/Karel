@@ -14,6 +14,9 @@ public class RunNodeVisitor implements NodeVisitor {
     @Override
     public KarelMap accept(FunctionCallNode node, KarelMap map, Functions functions) {
         String name = node.getFuncName();
+        if (functions.getFunction(name) == null){
+            throw new UnexpectedFunctionException(name);
+        }
         Node function = functions.getFunction(name);
         map = function.accept(this, map, functions);
         return node.getNext().accept(this, map, functions);
