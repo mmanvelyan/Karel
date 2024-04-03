@@ -1,6 +1,7 @@
 package org.example;
 
 import org.example.condition.Condition;
+import org.example.condition.InvalidOperationException;
 
 import java.util.Map;
 
@@ -43,7 +44,7 @@ public class RunNodeVisitor implements NodeVisitor {
             case MOVE -> {
                 RobotPosition rp = map.getRobotPosition();
                 if (map.hasWall(rp.getPosition())){
-                    throw new RuntimeException();
+                    throw new InvalidOperationException(map, Operation.MOVE);
                 } else {
                     map = new KarelMap(map.getWallsMap(), map.getBeepersMap(), new RobotPosition(rp.getPosition().getNext(), rp.getBag()));
                 }
@@ -55,7 +56,7 @@ public class RunNodeVisitor implements NodeVisitor {
             case PUT_BEEPER -> {
                 RobotPosition rp = map.getRobotPosition();
                 if (rp.getBag() == 0){
-                    throw new RuntimeException();
+                    throw new InvalidOperationException(map, Operation.PUT_BEEPER);
                 }
                 BeepersMap beepersMap = map.getBeepersMap();
                 Map<Coordinates, Integer> beepers = beepersMap.getBeepers();
@@ -67,7 +68,7 @@ public class RunNodeVisitor implements NodeVisitor {
                 BeepersMap beepersMap = map.getBeepersMap();
                 int b = beepersMap.getBeepersCount(rp.getPosition());
                 if (b == 0){
-                    throw new RuntimeException();
+                    throw new InvalidOperationException(map, Operation.PICK_BEEPER);
                 }
                 Map<Coordinates, Integer> beepers = beepersMap.getBeepers();
                 beepers.put(rp.getPosition().toNorth(), b-1);
