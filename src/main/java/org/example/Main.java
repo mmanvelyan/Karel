@@ -54,6 +54,6 @@ public class Main {
         System.out.println(program);
         Node start = new FunctionCallNode("main", new EmptyNode());
         km = start.accept(new RunNodeVisitor(), km, functions);
-        km.print();
+        System.out.print(km.toString());
     }
 }
