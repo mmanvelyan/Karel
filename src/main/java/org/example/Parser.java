@@ -69,24 +69,24 @@ public class Parser {
             throw new UnexpectedTokenException(next, ")");
         }
         return switch (name) {
-            case "frontIsClear" -> new FrontIsClearCondition();
+            case "frontIsClear" -> new NotCondition(new FrontIsBlockedCondition());
             case "frontIsBlocked" -> new FrontIsBlockedCondition();
-            case "leftIsClear" -> new LeftIsClearCondition();
+            case "leftIsClear" -> new NotCondition(new LeftIsBlockedCondition());
             case "leftIsBlocked" -> new LeftIsBlockedCondition();
-            case "rightIsClear" -> new RightIsClearCondition();
+            case "rightIsClear" -> new NotCondition(new RightIsBlockedCondition());
             case "rightIsBlocked" -> new RightIsBlockedCondition();
             case "beepersPresent" -> new BeepersPresentCondition();
-            case "noBeepersPresent" -> new NoBeepersPresentCondition();
+            case "noBeepersPresent" -> new NotCondition(new BeepersPresentCondition());
             case "beepersInBag" -> new BeepersInBagCondition();
-            case "noBeepersInBag" -> new NoBeepersInBagCondition();
+            case "noBeepersInBag" -> new NotCondition(new BeepersInBagCondition());
             case "facingNorth" -> new FacingWallCondition(Direction.NORTH);
-            case "notFacingNorth" -> new NotFacingNorthCondition();
-            case "facingEast" -> new FacingEastCondition();
-            case "notFacingEast" -> new NotFacingEastCondition();
-            case "facingSouth" -> new FacingSouthCondition();
-            case "notFacingSouth" -> new NotFacingSouthCondition();
-            case "facingWest" -> new FacingWestCondition();
-            case "notFacingWest" -> new NotFacingWestCondition();
+            case "notFacingNorth" -> new NotCondition(new FacingWallCondition(Direction.NORTH));
+            case "facingEast" -> new FacingWallCondition(Direction.EAST);
+            case "notFacingEast" -> new NotCondition(new FacingWallCondition(Direction.EAST));
+            case "facingSouth" -> new FacingWallCondition(Direction.SOUTH);
+            case "notFacingSouth" -> new NotCondition(new FacingWallCondition(Direction.SOUTH));
+            case "facingWest" -> new FacingWallCondition(Direction.WEST);
+            case "notFacingWest" -> new NotCondition(new FacingWallCondition(Direction.WEST));
             default -> throw new UnexpectedTokenException(nameToken, "Condition name");
         };
     }
