@@ -23,7 +23,7 @@ public class Lexer {
         prevPos = pos;
         prevLine = line;
         prevLinePos = linePos;
-        while (pos < str.length() && (str.charAt(pos) == ' ' || str.charAt(pos) == '\n' || str.charAt(pos) == '\t')){
+        while (pos < str.length() && (str.charAt(pos) == ' ' || str.charAt(pos) == '\n' || str.charAt(pos) == '\t' || str.charAt(pos) == '\r')){
             if (str.charAt(pos) == '\n'){
                 line++;
                 linePos = 1;
