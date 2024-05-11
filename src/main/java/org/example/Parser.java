@@ -79,7 +79,7 @@ public class Parser {
             case "noBeepersPresent" -> new NoBeepersPresentCondition();
             case "beepersInBag" -> new BeepersInBagCondition();
             case "noBeepersInBag" -> new NoBeepersInBagCondition();
-            case "facingNorth" -> new FacingNorthCondition();
+            case "facingNorth" -> new FacingWallCondition(Direction.NORTH);
             case "notFacingNorth" -> new NotFacingNorthCondition();
             case "facingEast" -> new FacingEastCondition();
             case "notFacingEast" -> new NotFacingEastCondition();
