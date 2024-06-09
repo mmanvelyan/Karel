@@ -4,12 +4,21 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class Main {
     public static void main(String[] args) {
         try {
+            String url = "jdbc:postgresql://larin-vb:5432/postgres?user=postgres&password=qwerty&ssl=false";
+            Connection conn = DriverManager.getConnection(url);
+            Collection<String> users = selectUsers(conn);
+            System.out.println(users);
+
             String program = readProgram("src/main/resources/program.txt");
             KarelMap km = createMap("src/main/resources/map.txt");
+            System.out.println(km);
             Functions functions = new Functions();
 
             Node start = compile(program, functions);
@@ -19,6 +28,23 @@ public class Main {
             System.out.println(resultMap.toString());
         } catch (Exception e){
             e.printStackTrace();
+        }
+    }
+
+    private static Collection<String> selectUsers(Connection conn) {
+        String s = "' OR ''='";
+        String query = "SELECT ID, USERNAME, EMAIL, PASSWORD FROM USERS WHERE USERNAME = "+"\'"+s+"\'";
+
+        try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(query)){
+            ArrayList<String> users = new ArrayList<>();
+            while (rs.next()) {
+                String username = rs.getString("USERNAME");
+                users.add(username);
+            }
+            return users;
+        } catch (SQLException e) {
+            System.err.println(e.toString());
+            throw new RuntimeException(e);
         }
     }
 

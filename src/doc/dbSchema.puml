@@ -1,0 +1,44 @@
+@startuml
+
+!include ./dbProcedures.puml
+
+title "Karel Schema"
+
+
+$table("USERS", "id_f521e766") {
+    $pk("USER_ID"): INTEGER NOT NULL
+    $column("USERNAME"): VARCHAR NOT NULL
+    $column("FIRSTNAME"): VARCHAR
+    $column("LASTNAME"): VARCHAR
+    $column("EMAIL"): VARCHAR UNIQUE NOT NULL
+    $column("PHONE"): VARCHAR
+    $column("PASSWORD"): VARCHAR NOT NULL
+}
+
+$table("PROBLEMS", "id_f4a675c8") {
+    $pk("PROBLEM_ID"): INTEGER NOT NULL
+    $column("TITLE"): VARCHAR NOT NULL
+    $column("DESCRIPTION"): TEXT NOT NULL
+}
+
+$table("TESTS", "id_ead84c5d") {
+    $pk("TEST_ID"): INTEGER NOT NULL
+    $fk("PROBLEM_ID"): INTEGER NOT NULL
+    $column("INPUT"): TEXT
+    $column("OUTPUT"): TEXT
+}
+
+$table("SUBMISSIONS", "id_cad84c5e") {
+    $pk("SUBMISSION_ID"): INTEGER NOT NULL
+    $fk("USER_ID"): INTEGER NOT NULL
+    $fk("PROBLEM_ID"): INTEGER NOT NULL
+    $column("CODE"): TEXT
+    $column("STATUS"): VARCHAR NOT NULL
+}
+
+id_f521e766::USER_ID  ||--o{ id_cad84c5e::USER_ID : FK_SUBMISSION_USER
+id_f4a675c8::PROBLEM_ID  ||--o{ id_cad84c5e::PROBLEM_ID : FK_SUBMISSION_PROBLEM
+id_f4a675c8::PROBLEM_ID  ||--o{ id_ead84c5d::PROBLEM_ID : FK_TEST_PROBLEM
+
+
+@enduml

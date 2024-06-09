@@ -233,7 +233,7 @@ public class KarelMap {
                         case WEST -> result.add(" < ");
                     }
                 } else {
-                    int x = beepersMap.getBeepersCount(new Coordinates(j / 2, i / 2));
+                    int x = beepersMap.getBeepersCount(new Coordinates(j / 2+1, i / 2+1));
                     if (x > 0) {
                         if (x < 10) {
                             result.add(" ");

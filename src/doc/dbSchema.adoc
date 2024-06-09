@@ -1,0 +1,6 @@
+= DB Schema
+
+[plantuml]
+....
+!include ./dbSchema.puml
+....
