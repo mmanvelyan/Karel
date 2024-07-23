@@ -23,3 +23,10 @@
   * https://docs.oracle.com/javase/tutorial/jdbc/TOC.html
   * https://habr.com/ru/articles/813781/
   * https://habr.com/ru/articles/815323/
+
+
+* Spring boot tests (Controller)
+* Repository test (in-memory database)
+* Testcontainers (e2e test)
+* JdbcClient vs JdbcTemplate
+* Packaging

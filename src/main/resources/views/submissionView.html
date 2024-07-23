@@ -1,0 +1,12 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html xmlns:th="https://www.thymeleaf.org" lang="java">
+    <body>
+        <h3>Problem Submission</h3>
+        <p>Submission Id: <span th:text="${submission.getSubmission_id()}"> </span></p>
+        <p>Problem Id: <span th:text="${submission.getProblem_id()}"> </span></p>
+        <p>User Id: <span th:text="${submission.getUser_id()}"> </span></p>
+        <p>Code: <span th:text="${submission.getCode()}"> </span></p>
+        <p>Status: <span th:text="${submission.getStatus_id()}"> </span></p>
+    </body>
+</html>

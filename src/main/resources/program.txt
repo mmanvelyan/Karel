@@ -1,3 +1,52 @@
-function main(){
+function turnRight() {
+    turnLeft();
+    turnLeft();
+    turnLeft();
+}
 
+function pickAll(){
+    while (beepersPresent()){
+        pickBeeper();
+    }
+}
+
+function moveToWall() {
+    while (frontIsClear()) {
+        move();
+        pickAll();
+    }
+}
+
+function descendHurdle() {
+    turnRight();
+    moveToWall();
+    turnLeft();
+}
+
+function ascendHurdle() {
+    turnLeft();
+    while (rightIsBlocked()) {
+        move();
+        pickAll();
+    }
+    turnRight();
+}
+
+function jumpHurdle() {
+    ascendHurdle();
+    move();
+    pickAll();
+    descendHurdle();
+}
+
+function main(){
+    pickAll();
+    repeat (8) {
+        if (frontIsClear()) {
+            move();
+            pickAll();
+        } else {
+            jumpHurdle();
+        }
+    }
 }

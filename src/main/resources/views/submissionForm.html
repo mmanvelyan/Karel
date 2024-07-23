@@ -1,0 +1,12 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html xmlns:th="https://www.thymeleaf.org" lang="java">
+    <body>
+        <h3>Problem Submission</h3>
+        <form th:action="@{/submit}" th:object="${submission}" method="post">
+            <p>Problem Id: <input type="text" th:field="*{problem_id}"></p>
+            <p>Code: <input type="text" th:field="*{code}"/></p>
+            <p><input type="submit" value="Submit"></p>
+        </form>
+    </body>
+</html>

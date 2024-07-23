@@ -1,0 +1,16 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+    <body>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>TITLE</th>
+            </tr>
+            <tr th:each="problem : ${problems}" class="problem-list">
+                <td><span th:text="${problem.id()}"> Id </span></td>
+                <td><span th:text="${problem.title()}"> Title </span></td>
+            </tr>
+        </table>
+    </body>
+</html>
