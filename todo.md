@@ -30,3 +30,21 @@
 * Testcontainers (e2e test)
 * JdbcClient vs JdbcTemplate
 * Packaging
+
+* CompiledProgram Compiler, packages
+* InterruptedException
+* Tester
+* Junit tests
+* GitHub actions
+
+
+
+
+
+
+
+
+
+
+
+

@@ -11,10 +11,12 @@ import java.util.List;
 @Service
 public class SubmissionService {
 
+    private final Tester tester;
     private final SubmissionRepository submissionRepository;
     private final TestRepository testRepository;
 
-    public SubmissionService(SubmissionRepository submissionRepository, TestRepository testRepository) {
+    public SubmissionService(Tester tester, SubmissionRepository submissionRepository, TestRepository testRepository) {
+        this.tester = tester;
         this.submissionRepository = submissionRepository;
         this.testRepository = testRepository;
     }
@@ -22,7 +24,6 @@ public class SubmissionService {
     public Integer createSubmission(int problem_id, String code) {
         Submission submission = new Submission(problem_id, code, 0);
         int id = submissionRepository.save(submission);
-        Tester tester = new Tester();
         List<Test> tests = testRepository.getTests(problem_id);
         Status res = tester.testAll(code, tests);
         submissionRepository.updateStatus(id, res.ordinal());
