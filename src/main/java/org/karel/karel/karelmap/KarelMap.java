@@ -1,8 +1,8 @@
-package org.karel.karel.compiler;
+package org.karel.karel.karelmap;
 
 import java.util.*;
 
-import static org.karel.karel.compiler.Direction.*;
+import static org.karel.karel.karelmap.Direction.*;
 
 public class KarelMap {
 

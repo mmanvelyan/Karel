@@ -1,4 +1,4 @@
-package org.karel.karel.compiler;
+package org.karel.karel.karelmap;
 
 public class InvalidMapException extends RuntimeException {
 

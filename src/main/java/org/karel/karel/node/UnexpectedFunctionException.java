@@ -1,4 +1,4 @@
-package org.karel.karel.compiler;
+package org.karel.karel.node;
 
 public class UnexpectedFunctionException extends RuntimeException {
     private final String name;

@@ -50,7 +50,11 @@ package org.karel.karel.compiler;
                             notFacingWest()
  */
 
-import org.karel.karel.compiler.condition.*;
+import org.karel.karel.Condition;
+import org.karel.karel.Node;
+import org.karel.karel.condition.*;
+import org.karel.karel.karelmap.Direction;
+import org.karel.karel.node.*;
 
 public class Parser {
     public Condition parseCondition(Lexer lex){

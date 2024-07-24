@@ -3,11 +3,13 @@ package org.karel.karel;
 import org.karel.karel.compiler.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.karel.karel.karelmap.KarelMap;
+import org.karel.karel.nodevisitor.RunNodeVisitor;
 
 import java.util.HashMap;
 import java.util.HashSet;
 
-import static org.karel.karel.compiler.Direction.*;
+import static org.karel.karel.karelmap.Direction.*;
 import static org.karel.karel.compiler.TokenType.*;
 
 public class UnexpectedTokenExceptionTest {

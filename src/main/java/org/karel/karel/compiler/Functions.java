@@ -1,5 +1,7 @@
 package org.karel.karel.compiler;
 
+import org.karel.karel.Node;
+
 import java.util.HashMap;
 import java.util.Map;
 

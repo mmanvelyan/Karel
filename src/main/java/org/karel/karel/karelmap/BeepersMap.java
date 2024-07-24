@@ -1,4 +1,4 @@
-package org.karel.karel.compiler;
+package org.karel.karel.karelmap;
 
 import java.util.HashMap;
 import java.util.Map;

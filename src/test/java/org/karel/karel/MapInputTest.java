@@ -1,8 +1,8 @@
 package org.karel.karel;
 
-import org.karel.karel.compiler.Direction;
-import org.karel.karel.compiler.InvalidMapException;
-import org.karel.karel.compiler.KarelMap;
+import org.karel.karel.karelmap.Direction;
+import org.karel.karel.karelmap.InvalidMapException;
+import org.karel.karel.karelmap.KarelMap;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 

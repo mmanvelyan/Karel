@@ -1,7 +1,8 @@
-package org.karel.karel.compiler.condition;
+package org.karel.karel.condition;
 
-import org.karel.karel.compiler.Direction;
-import org.karel.karel.compiler.KarelMap;
+import org.karel.karel.Condition;
+import org.karel.karel.karelmap.Direction;
+import org.karel.karel.karelmap.KarelMap;
 
 import java.util.Objects;
 

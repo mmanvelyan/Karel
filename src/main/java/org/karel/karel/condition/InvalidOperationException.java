@@ -1,7 +1,7 @@
-package org.karel.karel.compiler.condition;
+package org.karel.karel.condition;
 
-import org.karel.karel.compiler.KarelMap;
-import org.karel.karel.compiler.Operation;
+import org.karel.karel.karelmap.KarelMap;
+import org.karel.karel.node.Operation;
 
 public class InvalidOperationException extends RuntimeException {
 

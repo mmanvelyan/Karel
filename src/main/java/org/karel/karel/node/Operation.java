@@ -1,4 +1,4 @@
-package org.karel.karel.compiler;
+package org.karel.karel.node;
 
 public enum Operation {
     MOVE,

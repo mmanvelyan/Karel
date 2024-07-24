@@ -1,4 +1,9 @@
-package org.karel.karel.compiler;
+package org.karel.karel.node;
+
+import org.karel.karel.Node;
+import org.karel.karel.NodeVisitor;
+import org.karel.karel.compiler.*;
+import org.karel.karel.karelmap.KarelMap;
 
 public class OperationNode implements Node {
     private final Operation operation;

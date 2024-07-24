@@ -1,8 +1,12 @@
-package org.karel.karel.compiler;
+package org.karel.karel.node;
 
-import org.karel.karel.compiler.condition.Condition;
+import org.karel.karel.compiler.Functions;
+import org.karel.karel.karelmap.KarelMap;
+import org.karel.karel.Node;
+import org.karel.karel.NodeVisitor;
+import org.karel.karel.Condition;
 
-public class IfNode implements Node{
+public class IfNode implements Node {
     private final Condition cond;
     private final Node nodeIf;
     private final Node nodeElse;

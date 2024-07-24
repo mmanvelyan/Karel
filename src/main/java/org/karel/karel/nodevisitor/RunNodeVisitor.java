@@ -1,7 +1,15 @@
-package org.karel.karel.compiler;
+package org.karel.karel.nodevisitor;
 
-import org.karel.karel.compiler.condition.Condition;
-import org.karel.karel.compiler.condition.InvalidOperationException;
+import org.karel.karel.Node;
+import org.karel.karel.NodeVisitor;
+import org.karel.karel.compiler.*;
+import org.karel.karel.Condition;
+import org.karel.karel.condition.InvalidOperationException;
+import org.karel.karel.karelmap.BeepersMap;
+import org.karel.karel.karelmap.Coordinates;
+import org.karel.karel.karelmap.KarelMap;
+import org.karel.karel.karelmap.RobotPosition;
+import org.karel.karel.node.*;
 
 import java.util.Map;
 

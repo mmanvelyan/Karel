@@ -1,6 +1,10 @@
 package org.karel.karel;
 
 import org.karel.karel.compiler.*;
+import org.karel.karel.karelmap.KarelMap;
+import org.karel.karel.node.EmptyNode;
+import org.karel.karel.node.FunctionCallNode;
+import org.karel.karel.nodevisitor.RunNodeVisitor;
 import org.karel.karel.problem.ProblemJdbcRepository;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

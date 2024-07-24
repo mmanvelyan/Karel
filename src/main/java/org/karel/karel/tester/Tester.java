@@ -1,7 +1,9 @@
 package org.karel.karel.tester;
 import org.karel.karel.compiler.*;
 import org.karel.karel.compiler.Compiler;
-import org.karel.karel.compiler.condition.InvalidOperationException;
+import org.karel.karel.condition.InvalidOperationException;
+import org.karel.karel.karelmap.KarelMap;
+import org.karel.karel.node.UnexpectedFunctionException;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

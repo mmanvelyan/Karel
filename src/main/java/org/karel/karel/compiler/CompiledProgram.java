@@ -1,5 +1,9 @@
 package org.karel.karel.compiler;
 
+import org.karel.karel.Node;
+import org.karel.karel.karelmap.KarelMap;
+import org.karel.karel.nodevisitor.RunNodeVisitor;
+
 public class CompiledProgram {
 
     private final Node start;

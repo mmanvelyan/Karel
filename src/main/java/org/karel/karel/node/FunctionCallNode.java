@@ -1,4 +1,9 @@
-package org.karel.karel.compiler;
+package org.karel.karel.node;
+
+import org.karel.karel.compiler.Functions;
+import org.karel.karel.karelmap.KarelMap;
+import org.karel.karel.Node;
+import org.karel.karel.NodeVisitor;
 
 public class FunctionCallNode implements Node {
     private final String funcName;
