@@ -1,19 +1,13 @@
 package org.karel.web;
 
-import org.karel.karel.Main;
 import org.karel.karel.problem.ProblemRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@SpringBootTest(classes = Main.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
-@Sql(scripts = {"file:src/main/sql/010.createSchema.sql", "file:src/test/resources/problems.sql"},
-    executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
-public class ProblemRepositoryTest {
+public class ProblemRepositoryTest extends RepositoryTest {
 
     @Autowired
     private ProblemRepository problemRepository;
