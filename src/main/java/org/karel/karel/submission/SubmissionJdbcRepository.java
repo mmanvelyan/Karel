@@ -1,5 +1,6 @@
 package org.karel.karel.submission;
 
+import org.karel.karel.tester.Status;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -17,7 +18,7 @@ public class SubmissionJdbcRepository implements SubmissionRepository {
                     rs.getInt("user_id"),
                     rs.getInt("problem_id"),
                     rs.getString("code"),
-                    rs.getInt("status_id"));
+                    Status.values()[rs.getInt("status_id")]);
 
     public SubmissionJdbcRepository(JdbcClient jdbcClient){
         this.jdbcClient = jdbcClient;
@@ -43,17 +44,17 @@ public class SubmissionJdbcRepository implements SubmissionRepository {
                         .param("user_id", submission.getUser_id())
                         .param("problem_id", submission.getProblem_id())
                         .param("code", submission.getCode())
-                        .param("status_id", submission.getStatus_id())
+                        .param("status_id", submission.getStatus().ordinal())
                         .update(keyHolder);
         return (Integer) Objects.requireNonNull(keyHolder.getKeys()).get("submission_id");
     }
 
-    public void updateStatus(int submission_id, int status_id){
+    public void updateStatus(int submission_id, Status status){
         String update = "update karel.submissions " +
                         "set status_id = :status_id where submission_id = :submission_id";
         jdbcClient
                 .sql(update)
-                .param("status_id", status_id)
+                .param("status_id", status.ordinal())
                 .param("submission_id", submission_id)
                 .update();
     }

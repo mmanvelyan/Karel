@@ -22,11 +22,11 @@ public class SubmissionService {
     }
 
     public Integer createSubmission(int problem_id, String code) {
-        Submission submission = new Submission(problem_id, code, 0);
+        Submission submission = new Submission(problem_id, code, Status.IN_QUEUE);
         int id = submissionRepository.save(submission);
         List<Test> tests = testRepository.getTests(problem_id);
         Status res = tester.testAll(code, tests);
-        submissionRepository.updateStatus(id, res.ordinal());
+        submissionRepository.updateStatus(id, res);
         return id;
     }
 

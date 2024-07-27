@@ -32,7 +32,7 @@
 * ~~Packaging~~
 
 * ~~CompiledProgram Compiler~~
-* Compiler configuration
+* ~~Compiler configuration~~
 * Status enum
 * Цепи Маркова
 * InterruptedException

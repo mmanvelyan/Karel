@@ -7,6 +7,6 @@
         <p>Problem Id: <span th:text="${submission.getProblem_id()}"> </span></p>
         <p>User Id: <span th:text="${submission.getUser_id()}"> </span></p>
         <p>Code: <span th:text="${submission.getCode()}"> </span></p>
-        <p>Status: <span th:text="${T(org.karel.karel.tester.Status).values()[submission.getStatus_id()].toString()}"> </span></p>
+        <p>Status: <span th:text="${submission.getStatus().toString()}"> </span></p>
     </body>
 </html>

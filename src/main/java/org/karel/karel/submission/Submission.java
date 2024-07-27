@@ -1,31 +1,37 @@
 package org.karel.karel.submission;
 
+import org.karel.karel.tester.Status;
+
 public class Submission {
 
     private int submission_id;
     private int user_id;
     private int problem_id;
     private String code;
-    private int status_id;
+    private Status status;
 
-    public Submission (int submission_id, int user_id, int problem_id, String code, int status_id) {
+    public Submission (int submission_id, int user_id, int problem_id, String code, Status status) {
         this.submission_id = submission_id;
         this.user_id = user_id;
         this.problem_id = problem_id;
         this.code = code;
-        this.status_id = status_id;
+        this.status = status;
     }
 
-    public Submission (int user_id, int problem_id, String code, int status_id){
-        this(0, user_id, problem_id, code,status_id);
+    public Submission (int user_id, int problem_id, String code, Status status){
+        this(0, user_id, problem_id, code,status);
     }
 
-    public Submission (int problem_id, String code, int status_id){
-        this(0,0, problem_id, code, status_id);
+    public Submission (int problem_id, String code, Status status){
+        this(0,0, problem_id, code, status);
+    }
+
+    public Submission (int problem_id, String code){
+        this(0,0, problem_id, code, Status.IN_QUEUE);
     }
 
     public Submission(){
-        this(0, 0, 0, "", 0);
+        this(0, 0, 0, "", Status.IN_QUEUE);
     }
 
     public int getSubmission_id() {
@@ -44,8 +50,8 @@ public class Submission {
         return code;
     }
 
-    public int getStatus_id() {
-        return status_id;
+    public Status getStatus() {
+        return status;
     }
 
     public void setSubmission_id(int submission_id) {
@@ -64,7 +70,7 @@ public class Submission {
         this.code = code;
     }
 
-    public void setStatus_id(int status_id) {
-        this.status_id = status_id;
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }

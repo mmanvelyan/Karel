@@ -18,7 +18,7 @@ public class SubmissionController {
 
     @RequestMapping(value = "/submit", method = RequestMethod.GET)
     public String submissionForm(Model model) {
-        model.addAttribute("submission", new Submission(1, "Your code here", 0));
+        model.addAttribute("submission", new Submission(1, "Your code here"));
         return "submissionForm";
     }
 
