@@ -1,8 +1,5 @@
 package org.karel.karel.compiler;
 
-import org.springframework.stereotype.Component;
-
-@Component
 public class Compiler {
 
     public CompiledProgram compile(String program) {

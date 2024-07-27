@@ -4,7 +4,6 @@ import org.karel.karel.compiler.Compiler;
 import org.karel.karel.condition.InvalidOperationException;
 import org.karel.karel.karelmap.KarelMap;
 import org.karel.karel.node.UnexpectedFunctionException;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.concurrent.*;
@@ -24,7 +23,6 @@ class RunTest implements Callable<KarelMap> {
     }
 }
 
-@Component
 public class Tester {
 
     private final Compiler compiler;

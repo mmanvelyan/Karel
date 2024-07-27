@@ -6,9 +6,12 @@ import org.karel.karel.node.EmptyNode;
 import org.karel.karel.node.FunctionCallNode;
 import org.karel.karel.nodevisitor.RunNodeVisitor;
 import org.karel.karel.problem.ProblemJdbcRepository;
+import org.karel.spring.CompilerConfiguration;
+import org.karel.spring.TesterConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Import;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -16,6 +19,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 @SpringBootApplication
+@Import({CompilerConfiguration.class, TesterConfiguration.class})
 public class Main {
 
     public static void main(String[] args) {
@@ -29,9 +33,7 @@ public class Main {
             System.out.println(km);
             Functions functions = new Functions();
             Node start = compile(program, functions);
-
             KarelMap resultMap = execute(km, functions, start);
-
             System.out.println(resultMap.toString());
         } catch (Exception e){
             e.printStackTrace();
