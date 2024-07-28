@@ -35,7 +35,7 @@ public class Tester {
         CompiledProgram compiledProgram;
         try {
             compiledProgram = compiler.compile(program);
-        } catch (UnexpectedTokenException e) {
+        } catch (CompilationException e) {
             return Status.COMPILATION_ERROR;
         }
         for (Test test : tests) {

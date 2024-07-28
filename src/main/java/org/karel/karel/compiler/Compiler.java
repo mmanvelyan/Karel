@@ -6,8 +6,12 @@ public class Compiler {
         Lexer lexer = new Lexer(program);
         Parser parser = new Parser();
         Functions functions = new Functions();
-        parser.parse(lexer, functions);
-        return new CompiledProgram(functions.getFunction("main"), functions);
+        try {
+            parser.parse(lexer, functions);
+            return new CompiledProgram(functions.getFunction("main"), functions);
+        } catch (UnexpectedTokenException e){
+            throw new CompilationException(e);
+        }
     }
 
 }
