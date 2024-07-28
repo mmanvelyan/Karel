@@ -10,7 +10,8 @@ import org.springframework.test.context.jdbc.Sql;
         "file:src/test/resources/users.sql",
         "file:src/main/sql/011.createStatuses.sql",
         "file:src/test/resources/problems.sql",
-        "file:src/test/resources/submissions.sql"},
+        "file:src/test/resources/submissions.sql",
+        "file:src/test/resources/tests.sql"},
         executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
 public class RepositoryTest {
 

@@ -27,13 +27,14 @@
 
 * ~~Spring boot tests (Controller)~~
 * ~~Repository test (in-memory database)~~
-* Testcontainers (e2e test)
-* JdbcClient vs JdbcTemplate
 * ~~Packaging~~
-
 * ~~CompiledProgram Compiler~~
 * ~~Compiler configuration~~
-* Status enum
+* ~~Status enum~~
+
+
+* JdbcClient vs JdbcTemplate
+* Testcontainers (e2e test)
 * Цепи Маркова
 * InterruptedException
 * Tester

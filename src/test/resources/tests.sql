@@ -1,0 +1,1 @@
+INSERT INTO karel.TESTS(problem_id, input, output)  VALUES (1, '9 9 1 1 E 0', '9 9 2 1 E 0');
