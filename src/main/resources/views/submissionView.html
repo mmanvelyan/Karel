@@ -3,10 +3,10 @@
 <html xmlns:th="https://www.thymeleaf.org" lang="java">
     <body>
         <h3>Problem Submission</h3>
-        <p>Submission Id: <span th:text="${submission.getSubmission_id()}"> </span></p>
-        <p>Problem Id: <span th:text="${submission.getProblem_id()}"> </span></p>
-        <p>User Id: <span th:text="${submission.getUser_id()}"> </span></p>
-        <p>Code: <span th:text="${submission.getCode()}"> </span></p>
-        <p>Status: <span th:text="${submission.getStatus().toString()}"> </span></p>
+        <p>Submission Id: <span id="submission_id" th:text="${submission.getSubmission_id()}"> </span></p>
+        <p>Problem Id: <span id="problem_id" th:text="${submission.getProblem_id()}"> </span></p>
+        <p>User Id: <span id="user_id" th:text="${submission.getUser_id()}"> </span></p>
+        <p>Code: <span id="code" th:text="${submission.getCode()}"> </span></p>
+        <p>Status: <span id="status" th:text="${submission.getStatus().toString()}"> </span></p>
     </body>
 </html>

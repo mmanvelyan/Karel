@@ -4,9 +4,9 @@
     <body>
         <h3>Problem Submission</h3>
         <form th:action="@{/submit}" th:object="${submission}" method="post">
-            <p>Problem Id: <input type="text" th:field="*{problem_id}"></p>
-            <p>Code: <input type="text" th:field="*{code}"/></p>
-            <p><input type="submit" value="Submit"></p>
+            <p>Problem Id: <input id="problem_id" type="text" th:field="*{problem_id}"></p>
+            <p>Code: <input id="code" type="text" th:field="*{code}"/></p>
+            <p><input id="submit" type="submit" value="Submit"></p>
         </form>
     </body>
 </html>
