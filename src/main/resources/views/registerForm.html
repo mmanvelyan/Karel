@@ -1,0 +1,13 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html xmlns:th="https://www.thymeleaf.org" lang="java">
+    <body>
+    <h3>Register</h3>
+        <form th:action="@{/register}" th:object="${user}" method="post">
+            <p>Username: <input id="username" type="text" th:field="*{username}"></p>
+            <p>Password: <input id="password" type="text" th:field="*{password}"/></p>
+            <p>Email: <input id="email" type="text" th:field="*{email}"/></p>
+            <p><input id="register" type="submit" value="Register"></p>
+        </form>
+    </body>
+</html>

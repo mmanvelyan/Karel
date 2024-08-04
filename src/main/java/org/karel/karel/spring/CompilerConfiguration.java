@@ -1,4 +1,4 @@
-package org.karel.spring;
+package org.karel.karel.spring;
 
 import org.karel.karel.compiler.Compiler;
 import org.springframework.context.annotation.Bean;

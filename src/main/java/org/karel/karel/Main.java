@@ -6,12 +6,9 @@ import org.karel.karel.node.EmptyNode;
 import org.karel.karel.node.FunctionCallNode;
 import org.karel.karel.nodevisitor.RunNodeVisitor;
 import org.karel.karel.problem.ProblemJdbcRepository;
-import org.karel.spring.CompilerConfiguration;
-import org.karel.spring.TesterConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Import;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -19,7 +16,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 @SpringBootApplication
-@Import({CompilerConfiguration.class, TesterConfiguration.class})
 public class Main {
 
     public static void main(String[] args) {

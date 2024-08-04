@@ -1,7 +1,20 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
     <body>
+    <div sec:authorize="hasRole('USER')">Text visible to user.</div>
+    <div sec:authorize="hasRole('ADMIN')">Text visible to admin.</div>
+    <div sec:authorize="isAuthenticated()">Text visible only to authenticated users.</div>
+    Authenticated username:
+    <div sec:authorize="hasRole('USER')" sec:authentication="name"></div>
+    Authenticated user's firstName:
+    <div sec:authorize="hasRole('USER')" sec:authentication="principal.firstName"></div>
+    Authenticated user's lastName:
+    <div sec:authorize="hasRole('USER')" sec:authentication="principal.lastName"></div>
+    Authenticated user's email:
+    <div sec:authorize="hasRole('USER')" sec:authentication="principal.lastName"></div>
+    Authenticated user roles:
+    <div sec:authorize="hasRole('USER')" sec:authentication="principal.authorities"></div>
         <table>
             <tr>
                 <th>ID</th>
