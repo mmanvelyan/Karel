@@ -23,8 +23,14 @@ public class User extends org.springframework.security.core.userdetails.User {
         this.lastName = lastName;
     }
 
-    public User() {
-        this(0, "#", "#", "#", "#", "#", "#");
+    public User(UserData data){
+        super(data.getUsername(), data.getPassword(), Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
+        this.email = data.getEmail();
+        this.username = data.getUsername();
+        this.password = data.getPassword();
+        this.firstName = data.getFirstName();
+        this.lastName = data.getLastName();
+        this.phone = data.getPhone();
     }
 
     public int getUser_id() {
@@ -53,33 +59,5 @@ public class User extends org.springframework.security.core.userdetails.User {
 
     public String getLastName() {
         return lastName;
-    }
-
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
     }
 }

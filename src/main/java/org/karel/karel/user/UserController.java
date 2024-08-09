@@ -17,27 +17,34 @@ public class UserController {
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String getLoginForm(Model model){
-        User user = new User();
+        UserData user = new UserData();
         model.addAttribute("user", user);
         return "loginForm";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String userLogin(@ModelAttribute("user") User user, Model model){
+    public String userLogin(@ModelAttribute("user") UserData user, Model model){
         userDetailsService.loadUserByUsername(user.getUsername());
         return "redirect:/problems";
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String getRegisterForm(Model model){
-        User user = new User();
+        UserData user = new UserData();
         model.addAttribute("user", user);
         return "registerForm";
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String userRegister(@ModelAttribute("user") User user, Model model){
+    public String userRegister(@ModelAttribute("user") UserData user, Model model){
         userDetailsService.saveUser(user);
         return "redirect:/problems";
+    }
+
+    @RequestMapping(value = "/profile", method = RequestMethod.GET)
+    public String getProfile(Model model){
+        UserProfile userProfile = userDetailsService.getUserProfile();
+        model.addAttribute("user", userProfile);
+        return "profile";
     }
 }

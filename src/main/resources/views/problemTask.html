@@ -1,8 +1,33 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <html xmlns="http://www.w3.org/1999/html">
+    <head>
+        <title>Problems</title>
+        <div th:insert="~{fragments::head}"></div>
+    </head>
     <body>
-        <h1><span th:text="${problem.id()}"></span>. <span th:text="${problem.title()}"></span></h1>
-        <p><span th:text="${problem.description()}"></span></p>
+        <div th:insert="~{fragments::navbar}"></div>
+        <h1 class="text-center my-3">
+            <span th:text="${problem.id()}"></span>. <span th:text="${problem.title()}"></span></h1>
+        <p><span class="container mx-4" style="white-space: break-spaces" th:text="${problem.description()}"></span></p>
+
+        <div class="container my-4">
+            <div class="row">
+                <div class="col">
+                    <p>Sample Input:</p>
+                    <p style="white-space: break-spaces; font-family: monospace; font-size: small" th:text="${input}"></p>
+                </div>
+                <div class="col">
+                    <p>Sample Output:</p>
+                    <p style="white-space: break-spaces; font-family: monospace; font-size: small" th:text="${output}"></p>
+                </div>
+            </div>
+        </div>
+
+        <p><a th:href="@{/submit/{id}(id=${problem.id()})}" class="btn btn-outline-success mx-5 my-3" id="submit">Submit</a></p>
+        <div sec:authorize="isAuthenticated()">
+            <h3 class="text-center my-3">Your submissions</h3>
+            <div th:insert="~{fragments::submissionList (${submissions})}"></div>
+        </div>
     </body>
 </html>

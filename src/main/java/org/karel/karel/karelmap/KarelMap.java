@@ -165,8 +165,8 @@ public class KarelMap {
     @Override
     public String toString() {
         List<String> result = new ArrayList<>();
-        result.add(" CORNER  FACING  BEEP-BAG  BEEP-CORNER\n");
-        result.add(" (" + getX() + ", " + getY() + ")");
+        result.add("   CORNER  FACING  BEEP-BAG  BEEP-CORNER\n");
+        result.add("   (" + getX() + ", " + getY() + ")");
         if (getDirection() == Direction.EAST || getDirection() == Direction.WEST) {
             result.add(" ");
         }

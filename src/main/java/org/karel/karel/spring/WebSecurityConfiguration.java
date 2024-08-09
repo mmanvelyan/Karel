@@ -31,6 +31,7 @@ public class WebSecurityConfiguration {
                         .requestMatchers(new AntPathRequestMatcher("/problems/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/submit")).authenticated()
                         .requestMatchers(new AntPathRequestMatcher("/submit/**")).authenticated()
+                        .requestMatchers(new AntPathRequestMatcher("/profile")).authenticated()
                         .requestMatchers(new AntPathRequestMatcher("/submission/**")).authenticated())
                 .formLogin(form -> form.loginPage("/login").permitAll()
                         .defaultSuccessUrl("/problems"))

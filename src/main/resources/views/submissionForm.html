@@ -1,12 +1,26 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <html xmlns:th="https://www.thymeleaf.org" lang="java">
+    <head>
+        <title>Problems</title>
+        <div th:insert="~{fragments::head}"></div>
+    </head>
     <body>
-        <h3>Problem Submission</h3>
+        <div th:insert="~{fragments::navbar}"></div>
+        <h3 class="text-center my-3">Problem Submission</h3>
+        <div class="container d-flex justify-content-center">
         <form th:action="@{/submit}" th:object="${submission}" method="post">
-            <p>Problem Id: <input id="problem_id" type="text" th:field="*{problem_id}"></p>
-            <p>Code: <input id="code" type="text" th:field="*{code}"/></p>
-            <p><input id="submit" type="submit" value="Submit"></p>
+            <div class="form-group my-3">
+                <label for="problem_id">Problem Id</label>
+                <input type="text" class="form-control" id="problem_id" th:field="*{problem_id}" placeholder="Problem Id">
+            </div>
+            <div class="form-group my-3">
+                <label for="code">Code</label>
+                <textarea type="text" rows="10" class="form-control" id="code" th:field="*{code}" placeholder="//Your code here"></textarea>
+            </div>
+            <p><input class="btn btn-outline-success mx-5" id="submit" type="submit" value="Submit">
+                <input class="btn btn-outline-danger mx-5" id="reset" type="reset" value="Reset"></p>
         </form>
+        </div>
     </body>
 </html>

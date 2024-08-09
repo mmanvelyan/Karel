@@ -7,6 +7,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Objects;
 
 @Repository
@@ -57,5 +58,26 @@ public class SubmissionJdbcRepository implements SubmissionRepository {
                 .param("status_id", status.ordinal())
                 .param("submission_id", submission_id)
                 .update();
+    }
+
+    @Override
+    public List<Submission> getByUser(int user_id) {
+        String query = "select submission_id, user_id, problem_id, code, status_id from karel.submissions where user_id = :id order by submission_id desc";
+        return jdbcClient
+                .sql(query)
+                .param("id", user_id)
+                .query(submissionRowMapper)
+                .list();
+    }
+
+    @Override
+    public List<Submission> getByUserAndProblem(int user_id, int problem_id) {
+        String query = "select submission_id, user_id, problem_id, code, status_id from karel.submissions where user_id = :user_id and problem_id = :problem_id order by submission_id desc";
+        return jdbcClient
+                .sql(query)
+                .param("user_id", user_id)
+                .param("problem_id", problem_id)
+                .query(submissionRowMapper)
+                .list();
     }
 }
