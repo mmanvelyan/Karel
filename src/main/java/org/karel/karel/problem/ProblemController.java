@@ -2,10 +2,10 @@ package org.karel.karel.problem;
 
 import org.karel.karel.karelmap.KarelMap;
 import org.karel.karel.submission.Submission;
-import org.karel.karel.submission.SubmissionRepository;
 import org.karel.karel.submission.SubmissionService;
 import org.karel.karel.tester.Test;
 import org.karel.karel.tester.TestJdbcRepository;
+import org.karel.karel.tester.TestRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,12 +17,12 @@ import java.util.List;
 public class ProblemController {
 
     private final ProblemRepository problemRepository;
-    private final TestJdbcRepository testJdbcRepository;
+    private final TestRepository testRepository;
     private final SubmissionService submissionService;
 
-    public ProblemController(ProblemRepository problemRepository, TestJdbcRepository testJdbcRepository, SubmissionService submissionService) {
+    public ProblemController(ProblemRepository problemRepository, TestRepository testRepository, SubmissionService submissionService) {
         this.problemRepository = problemRepository;
-        this.testJdbcRepository = testJdbcRepository;
+        this.testRepository = testRepository;
         this.submissionService = submissionService;
     }
 
@@ -38,7 +38,7 @@ public class ProblemController {
     @RequestMapping("/problems/{id}")
     public ModelAndView showProblem(@PathVariable int id){
         Problem problem = problemRepository.getProblem(id);
-        Test test = testJdbcRepository.getTests(id).get(0);
+        Test test = testRepository.getTests(id).get(0);
         List<Submission> submissions = submissionService.getByUserAndProblem(id);
         ModelAndView modelAndView = new ModelAndView("problemTask");
         modelAndView.addObject("problem", problem);

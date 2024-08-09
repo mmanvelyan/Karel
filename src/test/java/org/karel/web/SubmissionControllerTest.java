@@ -1,6 +1,5 @@
 package org.karel.web;
 
-
 import org.junit.jupiter.api.Test;
 import org.karel.karel.Main;
 import org.karel.karel.submission.Submission;
@@ -10,13 +9,14 @@ import org.karel.karel.tester.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -31,6 +31,7 @@ public class SubmissionControllerTest {
     private SubmissionService submissionService;
 
     @Test
+    @WithMockUser
     public void getForm() throws Exception {
         mockMvc.perform(get("/submit"))
                 .andExpect(status().isOk())
@@ -39,15 +40,18 @@ public class SubmissionControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void submitForm() throws Exception {
         Submission submission = new Submission(1, "#");
         when(submissionService.createSubmission(anyInt(), anyString())).thenReturn(1);
         mockMvc.perform(post("/submit")
-                .flashAttr("submission", submission))
+                        .flashAttr("submission", submission)
+                        .with(csrf()))
                 .andExpect(redirectedUrl("/submission/1"));
     }
 
     @Test
+    @WithMockUser
     public void submissionView() throws Exception {
         Submission submission = new Submission(1, 0, 1, "#", Status.ACCEPTED);
         when(submissionService.getById(1)).thenReturn(submission);
