@@ -1,7 +1,5 @@
 package org.karel.web;
 
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.karel.karel.Main;
 import org.openqa.selenium.By;
@@ -23,7 +21,6 @@ public class SeleniumTest extends RepositoryTest {
     private final WebDriver driver = new ChromeDriver();
 
     @Test
-    @Order(1)
     public void register() {
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         driver.manage().window().maximize();
@@ -40,7 +37,6 @@ public class SeleniumTest extends RepositoryTest {
     }
 
     @Test
-    @Order(2)
     public void login(){
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         driver.manage().window().maximize();

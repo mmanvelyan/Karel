@@ -2,8 +2,6 @@ package org.karel.karel.user;
 
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.JdbcClient;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
@@ -20,7 +18,9 @@ public class UserJdbcRepository implements UserRepository {
                     rs.getString("email"),
                     rs.getString("phone"),
                     rs.getString("firstname"),
-                    rs.getString("lastname"));
+                    rs.getString("lastname"),
+                    rs.getString("token"),
+                    rs.getString("role"));
 
     public UserJdbcRepository(JdbcClient jdbcClient, PasswordEncoder passwordEncoder) {
         this.jdbcClient = jdbcClient;
@@ -28,7 +28,7 @@ public class UserJdbcRepository implements UserRepository {
     }
 
     public User getUser(String username) {
-        String query = "select user_id, username, password, email, phone, firstname, lastname from karel.users where username = :username";
+        String query = "select user_id, username, password, email, phone, firstname, lastname, token, role from karel.users where username = :username";
         return jdbcClient
                 .sql(query)
                 .param("username", username)
@@ -37,8 +37,8 @@ public class UserJdbcRepository implements UserRepository {
     }
 
     public void saveUser(User user) {
-        String update = "insert into karel.users(username, password, email, phone, firstname, lastname) " +
-                "values(:username, :password, :email, :phone, :firstname, :lastname)";
+        String update = "insert into karel.users(username, password, email, phone, firstname, lastname, token, role) " +
+                "values(:username, :password, :email, :phone, :firstname, :lastname, :token, :role)";
         Integer rowsAffected = jdbcClient
                 .sql(update)
                 .param("username", user.getUsername())
@@ -47,6 +47,17 @@ public class UserJdbcRepository implements UserRepository {
                 .param("phone", user.getPhone())
                 .param("firstname", user.getFirstName())
                 .param("lastname", user.getLastName())
+                .param("token", user.getToken())
+                .param("role", user.getRole())
+                .update();
+    }
+
+    @Override
+    public void activateByToken(String token) {
+        String update = "update karel.users set role = 'USER' where token = :token";
+        Integer rowsAffected = jdbcClient
+                .sql(update)
+                .param("token", token)
                 .update();
     }
 }

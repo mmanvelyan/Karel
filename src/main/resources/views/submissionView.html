@@ -1,21 +1,21 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <html xmlns:th="https://www.thymeleaf.org" lang="java">
-    <head>
-        <title>Problems</title>
-        <div th:insert="~{fragments::head}"></div>
-    </head>
-    <body>
-        <div th:insert="~{fragments::navbar}"></div>
-        <h3 class="text-center my-3">Problem Submission</h3>
-        <div style="padding-left: 10%; padding-right: 10%;">
+<head>
+    <title>Problems</title>
+    <div th:insert="~{fragments::head}"></div>
+</head>
+<body>
+    <div th:insert="~{fragments::navbar}"></div>
+    <h3 class="text-center my-3">Problem Submission</h3>
+    <div style="padding-left: 10%; padding-right: 10%;">
         <table class="table">
             <tr>
                 <th>Submission Id</th>
                 <th>Problem Id</th>
                 <th>User Id</th>
                 <th>Status</th>
-            <tr>
+            </tr>
             <tr>
                 <td><span id="submission_id" th:text="${submission.getSubmission_id()}"></span></td>
                 <td><a th:href="@{/problems/{id}(id=${submission.getProblem_id()})}" id="problem_id" th:text="${submission.getProblem_id()}"> </a></td>
@@ -24,7 +24,11 @@
             </tr>
         </table>
         <h4 class="text-center my-3">Code</h4>
-        <textarea class="form-control container align-items-center justify-content-center my-3" rows="15" style="white-space: break-spaces" id="code" th:text="${submission.getCode()}" readonly></textarea>
-        </div>
-    </body>
+        <textarea id="code" th:text="${submission.getCode()}" rows="15" readonly
+             class="form-control container align-items-center justify-content-center my-3"
+             style="white-space: break-spaces" >
+        </textarea>
+    </div>
+
+</body>
 </html>

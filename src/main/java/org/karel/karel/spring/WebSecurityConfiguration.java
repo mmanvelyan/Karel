@@ -28,6 +28,7 @@ public class WebSecurityConfiguration {
                         .requestMatchers(new AntPathRequestMatcher("/logout")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/register")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/problems")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/activate/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/problems/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/submit")).authenticated()
                         .requestMatchers(new AntPathRequestMatcher("/submit/**")).authenticated()

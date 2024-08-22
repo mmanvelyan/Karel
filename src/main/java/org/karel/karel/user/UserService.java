@@ -2,7 +2,6 @@ package org.karel.karel.user;
 
 import org.karel.karel.submission.Submission;
 import org.karel.karel.submission.SubmissionRepository;
-import org.karel.karel.submission.SubmissionService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,10 +16,12 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository repository;
     private final SubmissionRepository submissionRepository;
+    private final EmailService emailService;
 
-    public UserService(UserRepository repository, SubmissionRepository submissionService) {
+    public UserService(UserRepository repository, SubmissionRepository submissionService, EmailService emailService) {
         this.repository = repository;
         this.submissionRepository = submissionService;
+        this.emailService = emailService;
     }
 
     @Override
@@ -29,11 +30,20 @@ public class UserService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("Unknown user "+ username);
         }
+        if (user.getRole().equals("NOT_ACTIVATED")){
+            throw new UserNotActivatedException();
+        }
         return user;
     }
 
-    public void saveUser(UserData user) {
-        repository.saveUser(new User(user));
+    public void saveUser(UserData userData) {
+        User user = new User(userData);
+        repository.saveUser(user);
+        emailService.sendActivationLink(user.getEmail(), user.getToken());
+    }
+
+    public void activateByToken(String token){
+        repository.activateByToken(token);
     }
 
     public UserProfile getUserProfile() {

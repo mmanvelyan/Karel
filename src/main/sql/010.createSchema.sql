@@ -9,6 +9,8 @@ CREATE TABLE IF NOT EXISTS Karel.USERS
     EMAIL     varchar(255) UNIQUE NOT NULL,
     PHONE     varchar(255),
     PASSWORD  varchar(255)        NOT NULL,
+    TOKEN     varchar(255),
+    ROLE      varchar(255),
 
     PRIMARY KEY (USER_ID)
 );
