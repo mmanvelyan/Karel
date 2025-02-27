@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeetCode Layout</title>
+    <div th:insert="~{fragments::head}"></div>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        #top-right {
+            position: relative;
+        }
+
+        .input-panel {
+            position: absolute;
+            top: 33px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        #text-input, #map-input {
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #f8f9fa;
+            border: none;
+            box-shadow: none;
+            padding: 10px;
+            font-size: 16px;
+            resize: none;
+            overflow: auto;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .button-panel {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            right: 0;
+            bottom: 0;
+        }
+
+        .btn-sm {
+            font-size: 12px;
+            padding: 5px 10px;
+            margin: 0;
+        }
+
+        #bottom-right {
+            display: flex;
+            flex-direction: row;
+            height: 100%;
+        }
+
+        .bottom-left, .bottom-right {
+            flex: 1;
+            padding: 10px;
+            border-right: 1px solid #ccc;
+        }
+
+        .bottom-right {
+            border-right: none;
+        }
+
+        table {
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        td {
+            width: 5px;
+            height: 3px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            text-align: center;
+        }
+
+        body { height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+        .navbar-container { flex-shrink: 0; }
+        .main-container { flex-grow: 1; display: flex; overflow: auto; }
+        .left { background: #f8f9fa; overflow: auto; min-width: 100px; max-width: 80vw; width: 50vw}
+        .right-container { flex-grow: 1; display: flex; flex-direction: column; overflow: auto; }
+        .top-right, .bottom-right { flex-grow: 1; overflow: auto; }
+        .resizer { width: 5px; background: #ccc; cursor: ew-resize; }
+        .resizer-horizontal { height: 5px; background: #ccc; cursor: ns-resize; }
+    </style>
+</head>
+<body>
+<div class="navbar-container" th:insert="~{fragments::navbar}"></div>
+<div class="main-container">
+    <div class="left p-3 border" id="left-panel">
+        <button sec:authorize="isAuthenticated()" id="toggle-left-panel" class="btn btn-primary">Submissions</button>
+        <div id="left-content-1">
+        <h1 class="text-center my-3">
+            <span th:text="${problem.id()}"></span>. <span th:text="${problem.title()}"></span></h1>
+        <p><span class="container mx-4" style="white-space: break-spaces" th:text="${problem.description()}"></span></p>
+
+        <div class="container my-4">
+            <div class="row">
+                <div class="col">
+                    <p>Sample Input:</p>
+                    <p style="white-space: break-spaces; font-family: monospace; font-size: small" th:text="${input}"></p>
+                </div>
+                <div class="col">
+                    <p>Sample Output:</p>
+                    <p style="white-space: break-spaces; font-family: monospace; font-size: small" th:text="${output}"></p>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div id="left-content-2" style="display: none;">
+        <div sec:authorize="isAuthenticated()">
+            <h3 class="text-center my-3">Your submissions</h3>
+            <div th:insert="~{fragments::submissionList (${submissions})}"></div>
+        </div>
+        </div>
+    </div>
+    <div class="resizer" id="vertical-resizer"></div>
+    <div class="right-container">
+        <div class="top-right p-3 border" id="top-right">
+            <div class="button-panel">
+                <button class="btn btn-primary btn-sm">Run</button>
+                <button class="btn btn-success btn-sm">Submit</button>
+                <button class="btn btn-danger btn-sm">Debug</button>
+                <button id="toggle-right-bottom-panel" class="btn btn-primary btn-sm my-0">Edit Map</button>
+            </div>
+            <div class="input-panel">
+                <textarea id="text-input" class="form-control border-0" type="text" placeholder="Your code here"></textarea>
+            </div>
+        </div>
+        <div class="resizer-horizontal" id="horizontal-resizer"></div>
+        <div class="bottom-right p-3 border" id="bottom-right">
+            <div class="bottom-left">
+
+                <div id="right-bottom-content-1">
+
+                </div>
+
+                <div id="right-bottom-content-2" style="display: none;">
+                    <textarea id="map-input" class="form-control border-0" rows="10" type="text" placeholder="Your map here" th:text="${mapCode}"></textarea>
+                </div>
+
+            </div>
+            <div class="bottom-right">Правая часть</div>
+
+
+
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script type="module">
+    import {KarelMap} from "/js/KarelMap.js";
+    function createTable() {
+        document.getElementById('right-bottom-content-1').innerHTML = '';
+        const mapCodeBox = document.getElementById("map-input");
+        const mapCode = mapCodeBox.value;
+        console.log(mapCode);
+        const map = KarelMap.fromFile(mapCode);
+        console.log(`robot ${map.robotPosition.getX()} ${map.robotPosition.getY()}`);
+        const table = document.createElement('table');
+        table.style.border = '1px solid black';
+        table.style.borderCollapse = 'collapse';
+        var data = [];
+        const tbody = table.createTBody();
+        for (let i = 0; i < 9; i++){
+            data[i] = [];
+            data[i][0] = 9-i;
+            for (let j = 1; j < 10; j++){
+                if (map.robotPosition.getX() === j && map.robotPosition.getY() === 9-i){
+                    if (map.robotPosition.getDirection() === 'EAST') {
+                        data[i][j] = '\u2b9e';
+                    } else if (map.robotPosition.getDirection() === 'WEST') {
+                        data[i][j] = '\u2b9c';
+                    } else if (map.robotPosition.getDirection() === 'SOUTH') {
+                        data[i][j] = '\u2b9f';
+                    } else {
+                        data[i][j] = '\u2b9d';
+                    }
+                } else if (map.beepersMap.getBeepersCount(j, 9-i) > 0) {
+                    data[i][j] = map.beepersMap.getBeepersCount(j, 9-i);
+                } else {
+                    data[i][j] = '';
+                }
+            }
+        }
+        data[9] = [];
+        data[9][0] = '';
+        for (let j = 1; j <= 9; j++){
+            data[9][j] = j;
+        }
+        data.forEach(item => {
+            const row = tbody.insertRow();
+            item.forEach(cellData => {
+                const cell = row.insertCell();
+                cell.style.border = '1px solid black';
+                cell.style.padding = '6px';
+                cell.style.width = '50px';
+                cell.style.height = '20px';
+                cell.style.overflow = 'hidden';
+                cell.style.whiteSpace = 'nowrap';
+                cell.style.textAlign = 'center';
+                cell.style.verticalAlign = 'middle';
+                cell.style.fontSize = '12px';
+                cell.style.fontFamily = 'Courier, monospace';
+                cell.textContent = cellData;
+            });
+        });
+        for (let i = 1; i < 10; i++){
+            for (let j = 1; j < 10; j++){
+                if (map.hasWall(j, i, 'NORTH')){
+                    table.rows[9-i].cells[j].style.borderTop = "3px solid blue";
+                }
+                if (map.hasWall(j, i, 'SOUTH')){
+                    table.rows[9-i].cells[j].style.borderBottom = "3px solid blue";
+                }
+                if (map.hasWall(j, i, 'WEST')){
+                    table.rows[9-i].cells[j].style.borderLeft = "3px solid blue";
+                }
+                if (map.hasWall(j, i, 'EAST')){
+                    table.rows[9-i].cells[j].style.borderRight = "3px solid blue";
+                }
+            }
+        }
+        document.getElementById('right-bottom-content-1').appendChild(table);
+        document.getElementById('right-bottom-content-1').innerHTML += `<p>BAG: ${map.robotPosition.getBag()}<br>CORNER: ${map.getBeepersCount()}</p>`;
+    }
+
+    createTable();
+
+    const toggleLeftPanel = document.getElementById("toggle-left-panel");
+    if (toggleLeftPanel) {
+        toggleLeftPanel.addEventListener("click", function () {
+            var content1 = document.getElementById("left-content-1");
+            var content2 = document.getElementById("left-content-2");
+            var button = document.getElementById("toggle-left-panel");
+            if (content1.style.display === "none") {
+                content1.style.display = "block";
+                content2.style.display = "none";
+                button.innerText = "Submissions";
+            } else {
+                content1.style.display = "none";
+                content2.style.display = "block";
+                button.innerText = "Task";
+            }
+        });
+    }
+
+    const rightBottomToggle = document.getElementById("toggle-right-bottom-panel");
+    if (rightBottomToggle) {
+        rightBottomToggle.addEventListener("click", function () {
+            var content1 = document.getElementById("right-bottom-content-1");
+            var content2 = document.getElementById("right-bottom-content-2");
+            var button = document.getElementById("toggle-right-bottom-panel");
+            if (content1.style.display === "none") {
+                createTable();
+                content1.style.display = "block";
+                content2.style.display = "none";
+                button.innerText = "Edit Map";
+            } else {
+                content1.style.display = "none";
+                content2.style.display = "block";
+                button.innerText = "View Map";
+            }
+        });
+    }
+
+    const verticalResizer = document.getElementById("vertical-resizer");
+    const leftPanel = document.getElementById("left-panel");
+    let isResizingV = false;
+
+    verticalResizer.addEventListener("mousedown", () => {
+        isResizingV = true;
+        document.addEventListener("mousemove", resizeVertical);
+        document.addEventListener("mouseup", () => isResizingV = false, { once: true });
+    });
+
+    function resizeVertical(e) {
+        if (!isResizingV) return;
+        let newWidth = e.clientX;
+        if (newWidth > 100 && newWidth < window.innerWidth * 0.5) {
+            leftPanel.style.width = `${newWidth}px`;
+        }
+    }
+
+    const horizontalResizer = document.getElementById("horizontal-resizer");
+    const topRightPanel = document.getElementById("top-right");
+    const bottomRightPanel = document.getElementById("bottom-right");
+    let isResizingH = false;
+
+    horizontalResizer.addEventListener("mousedown", () => {
+        isResizingH = true;
+        document.addEventListener("mousemove", resizeHorizontal);
+        document.addEventListener("mouseup", () => isResizingH = false, { once: true });
+    });
+
+    function resizeHorizontal(e) {
+        if (!isResizingH) return;
+        let newHeight = e.clientY - topRightPanel.getBoundingClientRect().top;
+        if (newHeight > 50 && newHeight < window.innerHeight - 100) {
+            topRightPanel.style.flex = `0 0 ${newHeight}px`;
+            bottomRightPanel.style.flex = "1";
+        }
+    }
+</script>
+</body>
+</html>

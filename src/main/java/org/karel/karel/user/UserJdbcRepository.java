@@ -36,6 +36,15 @@ public class UserJdbcRepository implements UserRepository {
                 .single();
     }
 
+    public User getUserByEmail(String email) {
+        String query = "select user_id, username, password, email, phone, firstname, lastname, token, role from karel.users where email = :email";
+        return jdbcClient
+                .sql(query)
+                .param("email", email)
+                .query(userRowMapper)
+                .single();
+    }
+
     public void saveUser(User user) {
         String update = "insert into karel.users(username, password, email, phone, firstname, lastname, token, role) " +
                 "values(:username, :password, :email, :phone, :firstname, :lastname, :token, :role)";

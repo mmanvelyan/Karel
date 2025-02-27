@@ -1,11 +1,34 @@
 package org.karel.karel.user;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
 public class UserData {
+
+    @NotNull(message = "Username must be not empty")
+    @Size(min=3, max=15, message = "Username must be 3 to 15 letters")
+    @Pattern(regexp = "[a-zA-Z]+[a-zA-Z0-9]+", message = "Username contains invalid characters")
+    @UniqueUsername(message = "Username is already used")
     private String username;
+
+    @Size(min=3, max=15, message = "Password must be 3 to 15 symbols")
     private String password;
+
+    @NotNull(message = "Email must be not empty")
+    @Email(message = "Invalid email format")
+    @UniqueEmail(message = "Email is already used")
     private String email;
+
     private String phone;
+
+    @NotNull(message = "First Name must be not empty")
+    @Pattern(regexp = "[a-zA-Z]+", message = "First Name contains invalid symbols")
     private String firstName;
+
+    @NotNull(message = "Last Name must be not empty")
+    @Pattern(regexp = "[a-zA-Z]+", message = "Last Name contains invalid symbols")
     private String lastName;
 
     public void setUsername(String username) {

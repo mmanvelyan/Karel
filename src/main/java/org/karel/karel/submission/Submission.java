@@ -1,12 +1,18 @@
 package org.karel.karel.submission;
 
+import jakarta.validation.constraints.NotNull;
 import org.karel.karel.tester.Status;
 
 public class Submission {
 
     private int submission_id;
     private int user_id;
+
+    @NotNull(message = "Problem Id must be not empty")
+    @ValidProblemId
     private int problem_id;
+
+    @NotNull(message = "Code must be not empty")
     private String code;
     private Status status;
 

@@ -40,9 +40,10 @@ public class ProblemController {
         Problem problem = problemRepository.getProblem(id);
         Test test = testRepository.getTests(id).get(0);
         List<Submission> submissions = submissionService.getByUserAndProblem(id);
-        ModelAndView modelAndView = new ModelAndView("problemTask");
+        ModelAndView modelAndView = new ModelAndView("problemTaskSubmission");
         modelAndView.addObject("problem", problem);
         modelAndView.addObject("input", new KarelMap(test.input()).toString());
+        modelAndView.addObject("mapCode", test.input());
         modelAndView.addObject("output", new KarelMap(test.output()).toString());
         modelAndView.addObject("submissions", submissions);
         return modelAndView;

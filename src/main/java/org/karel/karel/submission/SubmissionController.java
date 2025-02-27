@@ -1,5 +1,6 @@
 package org.karel.karel.submission;
 
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -29,7 +30,7 @@ public class SubmissionController {
     }
 
     @RequestMapping(value = "/submit", method = RequestMethod.POST)
-    public String submit(@ModelAttribute("submission") Submission s, Model model) {
+    public String submit(@Valid @ModelAttribute("submission") Submission s, Model model) {
         String code = s.getCode();
         int problem_id = s.getProblem_id();
         int id = submissionService.createSubmission(problem_id, code);

@@ -1,7 +1,9 @@
 package org.karel.karel.user;
 
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,7 +39,10 @@ public class UserController {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String userRegister(@ModelAttribute("user") UserData user, Model model){
+    public String userRegister(@Valid @ModelAttribute("user") UserData user, BindingResult result, Model model){
+        if (result.hasErrors()){
+            return "registerForm";
+        }
         userDetailsService.saveUser(user);
         return "redirect:/problems";
     }
