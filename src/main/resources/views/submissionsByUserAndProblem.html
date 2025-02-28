@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <div th:insert="~{fragments::head}"></div>
+    <title id="title" th:text="${problemId}"></title>
+</head>
+<body>
+    <div th:insert="~{fragments::navbar}"></div>
+    <h3 class="text-center my-3">Your submissions</h3>
+    <div style="padding-left: 10%; padding-right: 10%;">
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">SUBMISSION ID</th>
+            <th scope="col">PROBLEM ID</th>
+            <th scope="col">USER ID</th>
+            <th scope="col">STATUS</th>
+        </tr>
+        </thead>
+        <tbody id="submissionsTable"></tbody>
+    </table>
+    </div>
+
+
+    <script>
+        async function fetchSubmissions() {
+            try {
+                let problemId = document.getElementById("title").innerText;
+                const response = await fetch(`/submit-rest/submissions/${problemId}`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error("Error");
+                }
+
+                const submissions = await response.json();
+                const tableBody = document.getElementById("submissionsTable");
+                tableBody.innerHTML = "";
+
+                submissions.forEach(submission => {
+                    const row = `
+                        <tr class="problem-list">
+                            <td><a href="/submission/${submission.submission_id}">${submission.submission_id}</a></td>
+                            <td><a href="/problems/${submission.problem_id}">${submission.problem_id}</a></td>
+                            <td>${submission.user_id}</td>
+                            <td class="status-${submission.status.toLowerCase()}">${submission.status}</td>
+                        </tr>
+                    `;
+                    tableBody.innerHTML += row;
+                });
+                setTimeout(() => {
+                    document.querySelectorAll(".status-compilation_error, .status-runtime_error, .status-time_limit_exceeded, .status-wrong_answer")
+                        .forEach(el => el.style.color = "red");
+                    document.querySelectorAll(".status-accepted")
+                        .forEach(el => el.style.color = "green");
+                    document.querySelectorAll(".status-in_queue")
+                        .forEach(el => el.style.color = "green");
+                }, 100);
+            } catch (error) {
+                console.error("Error:", error);
+            }
+        }
+
+        fetchSubmissions();
+    </script>
+</body>
+</html>

@@ -44,4 +44,10 @@ public class SubmissionController {
         return "submissionView";
     }
 
+    @RequestMapping("/submissions/{id}")
+    public String submissionsView(@PathVariable int id, Model model){
+        model.addAttribute("problemId", id);
+        return "submissionsByUserAndProblem";
+    }
+
 }

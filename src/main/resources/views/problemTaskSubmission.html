@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LeetCode Layout</title>
+    <title th:text="${problem.title()}"></title>
     <div th:insert="~{fragments::head}"></div>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
@@ -93,7 +93,7 @@
         <button sec:authorize="isAuthenticated()" id="toggle-left-panel" class="btn btn-primary">Submissions</button>
         <div id="left-content-1">
         <h1 class="text-center my-3">
-            <span th:text="${problem.id()}"></span>. <span th:text="${problem.title()}"></span></h1>
+            <span id="problem-id" th:text="${problem.id()}"></span>. <span th:text="${problem.title()}"></span></h1>
         <p><span class="container mx-4" style="white-space: break-spaces" th:text="${problem.description()}"></span></p>
 
         <div class="container my-4">
@@ -121,12 +121,12 @@
         <div class="top-right p-3 border" id="top-right">
             <div class="button-panel">
                 <button class="btn btn-primary btn-sm">Run</button>
-                <button class="btn btn-success btn-sm">Submit</button>
+                <button sec:authorize="isAuthenticated()" id="button-submit" class="btn btn-success btn-sm">Submit</button>
                 <button class="btn btn-danger btn-sm">Debug</button>
                 <button id="toggle-right-bottom-panel" class="btn btn-primary btn-sm my-0">Edit Map</button>
             </div>
             <div class="input-panel">
-                <textarea id="text-input" class="form-control border-0" type="text" placeholder="Your code here"></textarea>
+                    <textarea id="text-input" class="form-control border-0" type="text"  placeholder="Your code here" spellcheck="false"></textarea>
             </div>
         </div>
         <div class="resizer-horizontal" id="horizontal-resizer"></div>
@@ -150,8 +150,55 @@
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-clike.js"></script>
+
 
 <script type="module">
+
+    document.getElementById("text-input").value =
+`function main(){
+    move();
+}`;
+
+    function isEmpty(str) {
+        if (str.trim() === '')
+            return true;
+
+        return false;
+    }
+
+    var buttonSubmit = document.getElementById("button-submit");
+    if (buttonSubmit){
+        document.getElementById("button-submit").addEventListener("click", function (){
+            const problemId = document.getElementById("problem-id").innerText;
+            console.log(problemId);
+            const code = document.getElementById("text-input").value;
+            if (isEmpty(code)){
+                return;
+            }
+            console.log(code);
+
+            fetch(`http://localhost:8080/submit-rest/${problemId}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "text/plain"
+                },
+                body: code
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Error: ${response.status}`);
+                    }
+                    console.log("Success!");
+                })
+                .catch(error => console.error("Submission error:", error));
+            window.location.replace("http://localhost:8080/submissions/"+problemId);
+        })
+    }
+
+
     import {KarelMap} from "/js/KarelMap.js";
     function createTable() {
         document.getElementById('right-bottom-content-1').innerHTML = '';

@@ -14,8 +14,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebSecurity
@@ -33,10 +31,13 @@ public class WebSecurityConfiguration {
                         .requestMatchers(new AntPathRequestMatcher("/activate/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/problems/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/js/**")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/favicon.ico")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/submit")).authenticated()
                         .requestMatchers(new AntPathRequestMatcher("/submit/**")).authenticated()
+                        .requestMatchers(new AntPathRequestMatcher("/submit-rest/**")).authenticated()
                         .requestMatchers(new AntPathRequestMatcher("/profile")).authenticated()
-                        .requestMatchers(new AntPathRequestMatcher("/submission/**")).authenticated())
+                        .requestMatchers(new AntPathRequestMatcher("/submission/**")).authenticated()
+                        .requestMatchers(new AntPathRequestMatcher("/submissions/**")).authenticated())
                 .formLogin(form -> form.loginPage("/login").permitAll()
                         .defaultSuccessUrl("/problems"))
                 .logout(logout -> logout.logoutSuccessUrl("/problems"))
