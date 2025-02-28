@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml"
+      xmlns:https="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +10,12 @@
     <style>
         #top-right {
             position: relative;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            padding-top: 40px;
+            padding-left: 0; !important;
+            margin-left: 0 !important;
         }
 
         .input-panel {
@@ -19,14 +26,17 @@
             bottom: 0;
         }
 
-        #text-input, #map-input {
-            margin: 0;
+        #text-input, #map-input, #editor{
+            margin: 20px;
+            padding: 0; !important;
+            margin-left: 0 !important;
+            margin-bottom: 0 !important;
+            margin-right: 0 !important;
             width: 100%;
             height: 100%;
             background-color: #f8f9fa;
             border: none;
             box-shadow: none;
-            padding: 10px;
             font-size: 16px;
             resize: none;
             overflow: auto;
@@ -125,9 +135,12 @@
                 <button class="btn btn-danger btn-sm">Debug</button>
                 <button id="toggle-right-bottom-panel" class="btn btn-primary btn-sm my-0">Edit Map</button>
             </div>
-            <div class="input-panel">
+            <!--
+            <div class="editor">
                     <textarea id="text-input" class="form-control border-0" type="text"  placeholder="Your code here" spellcheck="false"></textarea>
             </div>
+            -->
+            <div id="text-input" class="form-control border-0" type="text"  placeholder="Your code here" spellcheck="false"></div>
         </div>
         <div class="resizer-horizontal" id="horizontal-resizer"></div>
         <div class="bottom-right p-3 border" id="bottom-right">
@@ -150,17 +163,25 @@
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-clike.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.0/codemirror.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.0/theme/dracula.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.0/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.0/mode/clike/clike.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.0/addon/selection/active-line.min.js"></script>
+
 
 
 <script type="module">
-
-    document.getElementById("text-input").value =
-`function main(){
-    move();
-}`;
+    const editor = CodeMirror(document.getElementById("text-input"), {
+        mode: "text/x-csrc",
+        theme: "default",
+        lineNumbers: true,
+        matchBrackets: true,
+        autoCloseBrackets: true,
+        styleActiveLine: true,
+        lineWrapping: true,
+    });
+    editor.setSize('100%', '100%');
 
     function isEmpty(str) {
         if (str.trim() === '')
@@ -174,7 +195,7 @@
         document.getElementById("button-submit").addEventListener("click", function (){
             const problemId = document.getElementById("problem-id").innerText;
             console.log(problemId);
-            const code = document.getElementById("text-input").value;
+            const code = editor.getValue();
             if (isEmpty(code)){
                 return;
             }
